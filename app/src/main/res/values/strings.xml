@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Book Buddy</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="search_title">Search books</string>
+    <string name="search_hint">Search books...</string>
+    <string name="search_message">Search books by title, author \n or ISBN number.</string>
+
+    <string name="goodreads_text">Data courtesy of GoodReads</string>
+</resources>
