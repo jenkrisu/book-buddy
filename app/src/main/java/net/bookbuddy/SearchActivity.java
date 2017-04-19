@@ -9,8 +9,12 @@ import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import net.bookbuddy.utilities.*;
@@ -28,6 +32,8 @@ import java.util.List;
 
 public class SearchActivity extends BaseActivity {
 
+    private ListView listView;
+
     /**
      * Creates activity
      *
@@ -43,6 +49,29 @@ public class SearchActivity extends BaseActivity {
 
         // Handle search
         handleIntent(getIntent());
+
+        // Create ListView
+        createListView();
+    }
+
+    /**
+     * Creates ListView for search results.
+     */
+    private void createListView() {
+        // Create ListView
+        listView = (ListView) findViewById(R.id.listViewSearchBooks);
+
+        // Add header to ListView
+        View footer = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.list_item_work_footer, null, false);
+
+        listView.addFooterView(footer);
+
+        // Add footer to ListView
+        View header = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.list_item_work_header, null, false);
+
+        listView.addHeaderView(header);
     }
 
     /**
@@ -87,6 +116,7 @@ public class SearchActivity extends BaseActivity {
      *
      * @param intent intent
      */
+
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // Remove instructions and show spinner
@@ -109,12 +139,20 @@ public class SearchActivity extends BaseActivity {
         // Hide spinner
         findViewById(R.id.progressBarSearchBooks).setVisibility(View.GONE);
 
-        if (!works.isEmpty()) {
-            // Create ListView
-            for (Work w : works) {
-                System.out.println(w.getBestBook().getAuthorName() + ", " + w.getBestBook().getTitle());
+        // Add adapter to ListView
+        ListAdapter customAdapter = new BookSearchAdapter(works, this);
+        listView.setAdapter(customAdapter);
+
+        // Add listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Obs! Header is at position 0 and footer at last position.
+                int index = position - 1;
+                if (index > -1 && index < works.size()) {
+                    System.out.println(works.get(index).getBestBook().getTitle());
+                }
             }
-        }
+        });
     }
 
     /**
@@ -231,11 +269,12 @@ public class SearchActivity extends BaseActivity {
                 if (totalResults > 0) {
 
                     if (totalResults < 20) {
-                        message = "Showing " + totalResults
+                        message = "Found " + totalResults
                                 + " results for search \"" + query + "\".";
                     } else {
-                        message = "Showing 20 of " + totalResults
-                                + " results for search \"" + query + "\".";
+                        message = "Found " + totalResults
+                                + " results for search \"" + query + "\"."
+                                + " Showing 20 best results.";
                     }
 
                     // Add GoodReads attribution
