@@ -98,11 +98,14 @@ public class SearchActivity extends BaseActivity {
     /**
      * Processes response from AsyncTask.
      *
-     * @param books ArrayList
+     * @param works ArrayList
      */
-    private void processResponse(List<Work> books) {
-        if (!books.isEmpty()) {
+    private void processResponse(List<Work> works) {
+        if (!works.isEmpty()) {
             // Create ListView
+            for (Work w : works) {
+                System.out.println(w.getBestBook().getAuthorName() + ", " + w.getBestBook().getTitle());
+            }
         }
     }
 
@@ -111,18 +114,18 @@ public class SearchActivity extends BaseActivity {
      */
     private class Task extends AsyncTask<String, Integer, List<Work>> {
 
-        private List<Work> books;
+        private List<Work> works;
 
         /**
          * Contacts server for search.
          *
          * @param args query parameter
-         * @return ArrayList of books
+         * @return ArrayList of works
          */
         @Override
         protected List<Work> doInBackground(String... args) {
             String query = args[0];
-            books = new ArrayList<>();
+            works = new ArrayList<>();
 
             try {
                 // Create uri with key and query parameters
@@ -161,13 +164,13 @@ public class SearchActivity extends BaseActivity {
             }
 
             // Return empty arrayList
-            return books;
+            return works;
         }
 
         @Override
-        protected void onPostExecute(List<Work> books) {
-            super.onPostExecute(books);
-            processResponse(books);
+        protected void onPostExecute(List<Work> works) {
+            super.onPostExecute(works);
+            processResponse(works);
         }
 
         private void parseResults(String query, Document doc) {
@@ -179,9 +182,11 @@ public class SearchActivity extends BaseActivity {
             displayTotalResultsMessage(totalResults, query);
 
             if (totalResults > 0) {
-                books = DocumentParser.docToBooks(doc);
-                // if (books.isEmpty)
-                // displaySnackBar("Unfortunately an error occurred loading results");
+                works = DocumentParser.docToWorks(doc);
+                if (works.isEmpty()) {
+                    displaySnackBar("Unfortunately an error occurred loading results");
+                }
+
             }
         }
 
@@ -204,13 +209,12 @@ public class SearchActivity extends BaseActivity {
                 } else if (totalResults < 20) {
                     message = "Showing " + totalResults + " results for search \"" + query + "\".";
                 } else {
-                    message = "Showing 19 results of " + totalResults
+                    message = "Showing 20 of " + totalResults
                             + " results for search \"" + query + "\".";
                 }
 
                 textView.setText(message);
                 goodReads.setText(R.string.goodreads_text);
-
             });
         }
     }
