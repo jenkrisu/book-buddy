@@ -20,10 +20,24 @@ import java.util.List;
  */
 public class BookSearchAdapter extends ArrayAdapter<Work> {
 
+    /**
+     * Creates adapter.
+     *
+     * @param works   ArrayList<Work>
+     * @param context context
+     */
     public BookSearchAdapter(List<Work> works, Context context) {
         super(context, R.layout.list_item_work, works);
     }
 
+    /**
+     * Updates view with Work object information.
+     *
+     * @param position    integer
+     * @param convertView View
+     * @param parent      ViewGroup
+     * @return view
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
