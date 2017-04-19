@@ -10,13 +10,20 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-
+/**
+ * Helps handle InputStreams.
+ */
 public class InputStreamParser {
 
+    /**
+     * Converts InputStream to Document.
+     * @param is inputStream
+     * @return document
+     */
     public static Document streamToXmlDoc (InputStream is) {
-
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
+        // Settings for factory
         factory.setValidating(false);
         factory.setIgnoringComments(true);
         factory.setIgnoringElementContentWhitespace(true);
