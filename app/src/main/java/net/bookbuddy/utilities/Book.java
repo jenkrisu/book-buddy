@@ -6,14 +6,16 @@ package net.bookbuddy.utilities;
 
 public class Book {
 
-    private int id;
+    private String id;
     private String title;
-    private int authorId;
+    private String authorId;
     private String authorName;
     private String imageUrl;
     private String smallImageUrl;
 
-    public Book(int id, String title, int authorId, String authorName, String imageUrl,
+    public Book() {}
+
+    public Book(String id, String title, String authorId, String authorName, String imageUrl,
                 String smallImageUrl) {
         this.id = id;
         this.title = title;
@@ -23,11 +25,11 @@ public class Book {
         this.smallImageUrl = smallImageUrl;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -39,11 +41,11 @@ public class Book {
         this.title = title;
     }
 
-    public int getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
 

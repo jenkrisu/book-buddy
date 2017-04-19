@@ -6,14 +6,16 @@ package net.bookbuddy.utilities;
 
 public class Work {
 
-    private int id;
-    private int booksCount;
-    private int ratingsCount;
-    private int originalPublicationYer;
+    private String id;
+    private String booksCount;
+    private String ratingsCount;
+    private String originalPublicationYer;
     private float averageRating;
     private Book bestBook;
 
-    public Work(int id, int booksCount, int ratingsCount, int originalPublicationYer,
+    public Work() {}
+
+    public Work(String id, String booksCount, String ratingsCount, String originalPublicationYer,
                 float averageRating, Book bestBook) {
         this.id = id;
         this.booksCount = booksCount;
@@ -23,35 +25,35 @@ public class Work {
         this.bestBook = bestBook;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getBooksCount() {
+    public String getBooksCount() {
         return booksCount;
     }
 
-    public void setBooksCount(int booksCount) {
+    public void setBooksCount(String booksCount) {
         this.booksCount = booksCount;
     }
 
-    public int getRatingsCount() {
+    public String getRatingsCount() {
         return ratingsCount;
     }
 
-    public void setRatingsCount(int ratingsCount) {
+    public void setRatingsCount(String ratingsCount) {
         this.ratingsCount = ratingsCount;
     }
 
-    public int getOriginalPublicationYer() {
+    public String getOriginalPublicationYer() {
         return originalPublicationYer;
     }
 
-    public void setOriginalPublicationYer(int originalPublicationYer) {
+    public void setOriginalPublicationYer(String originalPublicationYer) {
         this.originalPublicationYer = originalPublicationYer;
     }
 
@@ -70,5 +72,4 @@ public class Work {
     public void setBestBook(Book bestBook) {
         this.bestBook = bestBook;
     }
-
 }
