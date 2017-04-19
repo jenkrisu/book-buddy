@@ -6,21 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 
-import net.bookbuddy.utilities.Book;
-import net.bookbuddy.utilities.InputStreamParser;
+import net.bookbuddy.utilities.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -35,16 +27,26 @@ import java.util.List;
 
 public class SearchActivity extends BaseActivity {
 
+    /**
+     * Creates activity
+     *
+     * @param savedInstanceState bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        // Add navigation drawer
         super.onCreateDrawer();
+
+        // Handle search
         handleIntent(getIntent());
     }
 
     /**
      * Creates options menu with SearchView.
+     *
      * @param menu menu
      * @return boolean
      */
@@ -95,9 +97,10 @@ public class SearchActivity extends BaseActivity {
 
     /**
      * Processes response from AsyncTask.
+     *
      * @param books ArrayList
      */
-    private void processResponse(List<Book> books) {
+    private void processResponse(List<Work> books) {
         if (!books.isEmpty()) {
             // Create ListView
         }
@@ -106,18 +109,18 @@ public class SearchActivity extends BaseActivity {
     /**
      * Contacts server for search with AsyncTask.
      */
-    private class Task extends AsyncTask<String, Integer, List<Book>> {
+    private class Task extends AsyncTask<String, Integer, List<Work>> {
 
-        private ArrayList<Book> books;
+        private List<Work> books;
 
         /**
          * Contacts server for search.
+         *
          * @param args query parameter
          * @return ArrayList of books
          */
         @Override
-        protected List<Book> doInBackground(String... args) {
-
+        protected List<Work> doInBackground(String... args) {
             String query = args[0];
             books = new ArrayList<>();
 
@@ -162,7 +165,7 @@ public class SearchActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(List<Book> books) {
+        protected void onPostExecute(List<Work> books) {
             super.onPostExecute(books);
             processResponse(books);
         }
@@ -176,9 +179,9 @@ public class SearchActivity extends BaseActivity {
             displayTotalResultsMessage(totalResults, query);
 
             if (totalResults > 0) {
-                // books = DocParser.docToBooks(doc);
+                books = DocumentParser.docToBooks(doc);
                 // if (books.isEmpty)
-                // displaySnackbar("Unfortunately an error occurred loading results");
+                // displaySnackBar("Unfortunately an error occurred loading results");
             }
         }
 
