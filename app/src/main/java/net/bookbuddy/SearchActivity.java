@@ -175,6 +175,11 @@ public class SearchActivity extends BaseActivity {
             return works;
         }
 
+        /**
+         * Sends response to activity.
+         *
+         * @param works ArrayList<Work>
+         */
         @Override
         protected void onPostExecute(List<Work> works) {
             super.onPostExecute(works);
@@ -198,6 +203,11 @@ public class SearchActivity extends BaseActivity {
             }
         }
 
+        /**
+         * Displays SnackBar.
+         *
+         * @param message message to display
+         */
         private void displaySnackBar(String message) {
             runOnUiThread(() -> {
                 Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
@@ -206,6 +216,12 @@ public class SearchActivity extends BaseActivity {
             });
         }
 
+        /**
+         * Sets message showing results.
+         *
+         * @param totalResults number of results
+         * @param query        search query
+         */
         private void displayTotalResultsMessage(int totalResults, String query) {
             runOnUiThread(() -> {
                 TextView textView = (TextView) findViewById(R.id.textViewSearchMessage);
