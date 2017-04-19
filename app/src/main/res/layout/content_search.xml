@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutContentSearch"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="net.bookbuddy.SearchActivity">
 
     <include layout="@layout/nav_app_bar" />
 
-    <RelativeLayout
+    <!-- Search instructions -->
+    <ScrollView
+        android:id="@+id/viewSearchInstructions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/linearLayout_listView"
+            android:id="@+id/linearLayout_searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/imageViewBookPile"
+                app:srcCompat="@drawable/ic_book_pile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/content_description_books" />
+
             <TextView
-                android:id="@+id/textViewSearchMessage"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,22 +39,45 @@
                 android:gravity="center"
                 android:text="@string/search_message" />
 
-            <ListView
-                android:id="@+id/listView_books"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </ListView>
         </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBarSearchBooks"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <!-- Search results -->
+    <LinearLayout
+        android:id="@+id/viewSearchResults"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/textViewSearchMessage"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center" />
+
+        <ListView
+            android:id="@+id/listView_books"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/textViewGoodReadsData"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linearLayout_listView"
-            android:layout_marginBottom="0dp"
             android:gravity="center" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

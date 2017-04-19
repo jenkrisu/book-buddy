@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 import net.bookbuddy.utilities.*;
@@ -88,6 +89,10 @@ public class SearchActivity extends BaseActivity {
      */
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            // Remove instructions and show spinner
+            findViewById(R.id.viewSearchInstructions).setVisibility(View.GONE);
+            findViewById(R.id.progressBarSearchBooks).setVisibility(View.VISIBLE);
+
             String query = intent.getStringExtra(SearchManager.QUERY);
             //New AsyncTask for searching books
             Task task = new Task();
@@ -101,6 +106,9 @@ public class SearchActivity extends BaseActivity {
      * @param works ArrayList
      */
     private void processResponse(List<Work> works) {
+        // Hide spinner
+        findViewById(R.id.progressBarSearchBooks).setVisibility(View.GONE);
+
         if (!works.isEmpty()) {
             // Create ListView
             for (Work w : works) {
@@ -204,17 +212,25 @@ public class SearchActivity extends BaseActivity {
                 TextView goodReads = (TextView) findViewById(R.id.textViewGoodReadsData);
                 String message = "";
 
-                if (totalResults == 0) {
-                    message = "No results found for search \"" + query + "\".";
-                } else if (totalResults < 20) {
-                    message = "Showing " + totalResults + " results for search \"" + query + "\".";
+                if (totalResults > 0) {
+
+                    if (totalResults < 20) {
+                        message = "Showing " + totalResults
+                                + " results for search \"" + query + "\".";
+                    } else {
+                        message = "Showing 20 of " + totalResults
+                                + " results for search \"" + query + "\".";
+                    }
+
+                    // Add GoodReads attribution
+                    goodReads.setText(R.string.goodreads_text);
+
                 } else {
-                    message = "Showing 20 of " + totalResults
-                            + " results for search \"" + query + "\".";
+                    message = "No results found for search \"" + query + "\".";
                 }
 
+                // Set message
                 textView.setText(message);
-                goodReads.setText(R.string.goodreads_text);
             });
         }
     }
