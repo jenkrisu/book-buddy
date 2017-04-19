@@ -28,6 +28,7 @@
         <!-- SearchActivity -->
         <activity
             android:name=".SearchActivity"
+            android:label="@string/nav_search_books"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
