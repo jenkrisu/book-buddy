@@ -1,10 +1,12 @@
 package net.bookbuddy.utilities;
 
+import java.io.Serializable;
+
 /**
  * Created by Jenni on 19.4.2017.
  */
 
-public class Work {
+public class Work implements Serializable {
 
     /**
      * Id of work.
