@@ -12,19 +12,22 @@
         <menu>
             <group>
                 <item
-                    android:icon="@drawable/to_read"
+                    android:icon="@drawable/ic_book_to_read"
                     android:id="@+id/nav_to_read"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:adjustViewBounds="true"
                     android:title="@string/nav_to_read" />
                 <item
-                    android:icon="@drawable/currently_reading"
+                    android:icon="@drawable/ic_book_reading"
                     android:id="@+id/nav_reading"
                     android:title="@string/nav_currently_reading" />
                 <item
-                    android:icon="@drawable/read"
+                    android:icon="@drawable/ic_book_read"
                     android:id="@+id/nav_read"
                     android:title="@string/nav_read" />
                 <item
-                    android:icon="@drawable/all_shelves"
+                    android:icon="@drawable/ic_book_shelves"
                     android:id="@+id/nav_bookshelves"
                     android:title="@string/nav_all_shelves" />
             </group>

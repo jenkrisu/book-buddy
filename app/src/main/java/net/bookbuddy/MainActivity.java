@@ -10,8 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     /**
-     * Called when activity is created.
-     * @param savedInstanceState
+     * Creates activity.
+     *
+     * @param savedInstanceState Bundle
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -17,7 +17,7 @@ public class DocumentParser {
      * Parses document to ArrayList of Work objects.
      *
      * @param doc Document
-     * @return ArrayList<Work>
+     * @return List<Work>
      */
     public static List<Work> docToWorks(Document doc) {
         NodeList worksNodeList = doc.getElementsByTagName("work");

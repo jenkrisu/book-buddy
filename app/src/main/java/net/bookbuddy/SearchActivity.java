@@ -32,12 +32,15 @@ import java.util.List;
 
 public class SearchActivity extends BaseActivity {
 
+    /**
+     * Shows list items.
+     */
     private ListView listView;
 
     /**
      * Creates activity
      *
-     * @param savedInstanceState bundle
+     * @param savedInstanceState Bundle
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,7 @@ public class SearchActivity extends BaseActivity {
     /**
      * Creates options menu with SearchView.
      *
-     * @param menu menu
+     * @param menu Menu
      * @return boolean
      */
     @Override
@@ -114,7 +117,7 @@ public class SearchActivity extends BaseActivity {
     /**
      * Handles intent.
      *
-     * @param intent intent
+     * @param intent Intent
      */
 
     private void handleIntent(Intent intent) {
@@ -165,8 +168,8 @@ public class SearchActivity extends BaseActivity {
         /**
          * Contacts server for search.
          *
-         * @param args query parameter
-         * @return ArrayList of works
+         * @param args String[]
+         * @return List<Work>
          */
         @Override
         protected List<Work> doInBackground(String... args) {
@@ -216,7 +219,7 @@ public class SearchActivity extends BaseActivity {
         /**
          * Sends response to activity.
          *
-         * @param works ArrayList<Work>
+         * @param works List<Work>
          */
         @Override
         protected void onPostExecute(List<Work> works) {
@@ -244,7 +247,7 @@ public class SearchActivity extends BaseActivity {
         /**
          * Displays SnackBar.
          *
-         * @param message message to display
+         * @param message String
          */
         private void displaySnackBar(String message) {
             runOnUiThread(() -> {
@@ -257,8 +260,8 @@ public class SearchActivity extends BaseActivity {
         /**
          * Sets message showing results.
          *
-         * @param totalResults number of results
-         * @param query        search query
+         * @param totalResults integer
+         * @param query        String
          */
         private void displayTotalResultsMessage(int totalResults, String query) {
             runOnUiThread(() -> {

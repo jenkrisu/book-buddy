@@ -17,10 +17,11 @@ public class InputStreamParser {
 
     /**
      * Converts InputStream to Document.
-     * @param is inputStream
-     * @return document
+     *
+     * @param is InputStream
+     * @return Document
      */
-    public static Document streamToXmlDoc (InputStream is) {
+    public static Document streamToXmlDoc(InputStream is) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         // Settings for factory

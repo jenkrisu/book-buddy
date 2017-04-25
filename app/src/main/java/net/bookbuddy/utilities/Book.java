@@ -6,15 +6,52 @@ package net.bookbuddy.utilities;
 
 public class Book {
 
+    /**
+     * Id of book.
+     */
     private String id;
+
+    /**
+     * Title of book.
+     */
     private String title;
+
+    /**
+     * Author id of book.
+     */
     private String authorId;
+
+    /**
+     * Author name of book.
+     */
     private String authorName;
+
+    /**
+     * Image url of book.
+     */
     private String imageUrl;
+
+    /**
+     * Small image url of book.
+     */
     private String smallImageUrl;
 
-    public Book() {}
+    /**
+     * Default constructor.
+     */
+    public Book() {
+    }
 
+    /**
+     * Constructor.
+     *
+     * @param id            String
+     * @param title         String
+     * @param authorId      String
+     * @param authorName    String
+     * @param imageUrl      String
+     * @param smallImageUrl String
+     */
     public Book(String id, String title, String authorId, String authorName, String imageUrl,
                 String smallImageUrl) {
         this.id = id;
@@ -25,51 +62,58 @@ public class Book {
         this.smallImageUrl = smallImageUrl;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return String id
+     */
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
+    /**
+     * Gets title.
+     *
+     * @return String title
+     */
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
+    /**
+     * Gets authorId.
+     *
+     * @return String authorId
+     */
     public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
-
+    /**
+     * Gets author name.
+     *
+     * @return String authorName
+     */
     public String getAuthorName() {
         return authorName;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-
+    /**
+     * Gets image url.
+     *
+     * @return String imageUrl
+     */
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
+    /**
+     * Gets small image url.
+     *
+     * @return String smallImageUrl
+     */
     public String getSmallImageUrl() {
         return smallImageUrl;
     }
 
-    public void setSmallImageUrl(String smallImageUrl) {
-        this.smallImageUrl = smallImageUrl;
-    }
 }
