@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -164,6 +166,7 @@ public class SearchActivity extends BaseActivity {
     private class Task extends AsyncTask<String, Integer, List<Work>> {
 
         private List<Work> works;
+        private String query;
 
         /**
          * Contacts server for search.
@@ -173,7 +176,7 @@ public class SearchActivity extends BaseActivity {
          */
         @Override
         protected List<Work> doInBackground(String... args) {
-            String query = args[0];
+            query = args[0];
             works = new ArrayList<>();
 
             try {
@@ -199,11 +202,11 @@ public class SearchActivity extends BaseActivity {
                         parseResults(query, doc);
 
                     } else {
-                        displaySnackBar("Unfortunately an error occurred loading results");
+                        displaySnackBar(getResources().getString(R.string.results_loading_error));
                     }
 
                 } else {
-                    displaySnackBar("Unfortunately an error occurred searching books");
+                    displaySnackBar(getResources().getString(R.string.http_books_search_error));
                 }
 
                 urlConnection.disconnect();
@@ -238,7 +241,7 @@ public class SearchActivity extends BaseActivity {
             if (totalResults > 0) {
                 works = DocumentParser.docToWorks(doc);
                 if (works.isEmpty()) {
-                    displaySnackBar("Unfortunately an error occurred loading results");
+                    displaySnackBar(getResources().getString(R.string.results_loading_error));
                 }
 
             }
@@ -280,8 +283,12 @@ public class SearchActivity extends BaseActivity {
                                 + " Showing 20 best results.";
                     }
 
-                    // Add GoodReads attribution
-                    goodReads.setText(R.string.goodreads_text);
+                    // Add GoodReads attribution and link to data source
+                    String url = createGoodReadsAttribution();
+                    String attribution = "Data from <a href='" + url + "'>GoodReads</a>";
+                    goodReads.setClickable(true);
+                    goodReads.setMovementMethod(LinkMovementMethod.getInstance());
+                    goodReads.setText(Html.fromHtml(attribution));
 
                 } else {
                     message = "No results found for search \"" + query + "\".";
@@ -290,6 +297,19 @@ public class SearchActivity extends BaseActivity {
                 // Set message
                 textView.setText(message);
             });
+        }
+
+        /**
+         * Creates link to search results on GoodReads.
+         *
+         * @return String search results url
+         */
+        private String createGoodReadsAttribution() {
+            Uri uri = Uri.parse("http://www.goodreads.com/search")
+                    .buildUpon()
+                    .appendQueryParameter("q", query)
+                    .build();
+            return uri.toString();
         }
     }
 

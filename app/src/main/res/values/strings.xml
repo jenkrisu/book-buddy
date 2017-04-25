@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">Book Buddy</string>
-    <string name="content_description_books">Pile of books</string>
 
+    <!-- Drawer Navigation -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="nav_search_books">Search Books</string>
     <string name="nav_bookshelves">Bookshelves</string>
     <string name="nav_to_read">To Read</string>
@@ -12,9 +11,14 @@
     <string name="nav_read">Read</string>
     <string name="nav_all_shelves">All Shelves</string>
 
+    <!-- Search Activity -->
     <string name="search_title">Search Books</string>
     <string name="search_hint">Title / Author / ISBN</string>
-    <string name="search_message">Search books by title, author \n or ISBN number.</string>
 
-    <string name="goodreads_text">Data courtesy of GoodReads</string>
+    <string name="search_message">Search books by title, author \n or ISBN number.</string>
+    <string name="content_description_books">Pile of books</string>
+
+    <!-- Error messages for SnackBars -->
+    <string name="results_loading_error">Unfortunately an error occurred loading results</string>
+    <string name="http_books_search_error">Unfortunately an error occurred searching books</string>
 </resources>
