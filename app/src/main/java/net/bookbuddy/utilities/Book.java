@@ -261,4 +261,82 @@ public class Book implements Serializable {
         return authors;
     }
 
+    /**
+     * Sets url of book page in GoodReads.
+     * @param url String
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    /**
+     * Sets ISBN10 of book.
+
+     * @param isbnTen String
+     */
+    public void setIsbnTen(String isbnTen) {
+        this.isbnTen = isbnTen;
+    }
+
+    /**
+     * Sets ISBN13 of book.
+
+     * @param isbnThirteen String
+     */
+    public void setIsbnThirteen(String isbnThirteen) {
+        this.isbnThirteen = isbnThirteen;
+    }
+
+    /**
+     * Sets description of book.
+
+     * @param description String
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Sets publication date of book.
+
+     * @param publication String
+     */
+    public void setPublication(Date publication) {
+        this.publication = publication;
+    }
+
+    /**
+     * Sets publisher of book.
+     * @param publisher String
+     */
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    /**
+     * Sates format of book.
+
+     * @param format String
+     */
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    /**
+     * Sets pages number of book.
+
+     * @param pages String
+     */
+    public void setPages(String pages) {
+        this.pages = pages;
+    }
+
+    /**
+     * Sets authors of book.
+
+     * @param authors List<Author>
+     */
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
 }
