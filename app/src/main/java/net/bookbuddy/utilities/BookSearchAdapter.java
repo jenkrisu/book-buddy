@@ -78,7 +78,7 @@ public class BookSearchAdapter extends ArrayAdapter<Work> {
 
 
             holder.title.setText(work.getBestBook().getTitle());
-            holder.author.setText("By " + work.getBestBook().getAuthorName());
+            holder.author.setText("By " + work.getBestBook().getAuthor().getName());
         }
 
         // Set book image or a placeholder, if image not available

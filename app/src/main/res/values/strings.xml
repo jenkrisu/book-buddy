@@ -16,10 +16,10 @@
     <string name="search_hint">Title / Author / ISBN</string>
 
     <string name="search_message">Search books by title, author \n or ISBN number.</string>
-    <string name="content_description_books">Image of book pile</string>
+    <string name="content_description_books">Image of bestBook pile</string>
 
-    <!-- Book Activity -->
-    <string name="content_description_book">Image of book</string>
+    <!-- BestBook Activity -->
+    <string name="content_description_book">Image of bestBook</string>
 
     <!-- Error messages for SnackBars -->
     <string name="results_loading_error">Unfortunately an error occurred loading results</string>

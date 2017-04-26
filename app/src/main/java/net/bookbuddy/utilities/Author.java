@@ -47,4 +47,30 @@ public class Author implements Serializable {
         this.role = role;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return String id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Gets name.
+     *
+     * @return String name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Gets role.
+     *
+     * @return String role
+     */
+    public String getRole() {
+        return role;
+    }
 }

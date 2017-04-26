@@ -182,7 +182,7 @@ public class SearchActivity extends BaseActivity {
 
             try {
                 // Create uri with key and query parameters
-                Uri uri = Uri.parse("http://www.goodreads.com/search/index.xml?")
+                Uri uri = Uri.parse("http://www.goodreads.com/search/index")
                         .buildUpon()
                         .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
                         .appendQueryParameter("q", query)

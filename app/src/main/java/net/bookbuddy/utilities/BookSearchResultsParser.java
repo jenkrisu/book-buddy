@@ -30,10 +30,10 @@ public class BookSearchResultsParser {
                 NodeList bookNodeList = workElement.getElementsByTagName("best_book");
                 Element bookElement = (Element) bookNodeList.item(0);
 
-                Book book = elementToBook(bookElement);
+                BestBook bestBook = elementToBook(bookElement);
 
-                if (book != null) {
-                    Work work = elementToWork(workElement, book);
+                if (bestBook != null) {
+                    Work work = elementToWork(workElement, bestBook);
                     if (work != null) {
                         works.add(work);
                     }
@@ -45,13 +45,13 @@ public class BookSearchResultsParser {
     }
 
     /**
-     * Creates Book object from Element.
+     * Creates BestBook object from Element.
      *
      * @param e Element
-     * @return Book
+     * @return BestBook
      */
-    private static Book elementToBook(Element e) {
-        // Book information from node
+    private static BestBook elementToBook(Element e) {
+        // BestBook information from node
         if (hasBookTags(e)) {
             String id = e.getElementsByTagName("id").item(0).getTextContent();
             String title = e.getElementsByTagName("title").item(0).getTextContent();
@@ -72,7 +72,7 @@ public class BookSearchResultsParser {
                 }
             }
 
-            return new Book(id, title, authorId, authorName, imageUrl, smallImageUrl);
+            return new BestBook(id, title, authorId, authorName, imageUrl, smallImageUrl);
         } else {
             return null;
         }
@@ -82,10 +82,10 @@ public class BookSearchResultsParser {
      * Creates Work object from Element.
      *
      * @param e Element
-     * @param b Book
+     * @param b BestBook
      * @return Work
      */
-    private static Work elementToWork(Element e, Book b) {
+    private static Work elementToWork(Element e, BestBook b) {
         if (hasWorkTags(e)) {
             String id = e.getElementsByTagName("id").item(0).getTextContent();
             String booksCount = e.getElementsByTagName("books_count").item(0).getTextContent();

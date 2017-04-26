@@ -36,7 +36,7 @@ public class Work implements Serializable {
     /**
      * Best book to represent this work.
      */
-    private Book bestBook;
+    private BestBook bestBook;
 
     /**
      * Default constructor for work.
@@ -52,10 +52,10 @@ public class Work implements Serializable {
      * @param ratingsCount           String
      * @param originalPublicationYer String
      * @param averageRating          Float
-     * @param bestBook               Book
+     * @param bestBook               BestBook
      */
     public Work(String id, String booksCount, String ratingsCount, String originalPublicationYer,
-                float averageRating, Book bestBook) {
+                float averageRating, BestBook bestBook) {
         this.id = id;
         this.booksCount = booksCount;
         this.ratingsCount = ratingsCount;
@@ -114,9 +114,9 @@ public class Work implements Serializable {
     /**
      * Gets best book representation of this work.
      *
-     * @return Book best book
+     * @return BestBook best book
      */
-    public Book getBestBook() {
+    public BestBook getBestBook() {
         return bestBook;
     }
 
