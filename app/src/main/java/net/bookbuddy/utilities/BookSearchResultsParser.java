@@ -59,7 +59,7 @@ public class BookSearchResultsParser {
             String smallImageUrl =
                     e.getElementsByTagName("small_image_url").item(0).getTextContent();
             String authorId = "";
-            String authorName = "Unknown author";
+            String authorName = "Anonymous";
 
             if (e.getElementsByTagName("author") != null) {
                 // Author information from book's child node

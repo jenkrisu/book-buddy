@@ -16,15 +16,11 @@ import com.squareup.picasso.Picasso;
 import net.bookbuddy.utilities.*;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.SQLOutput;
-import java.util.List;
 
 
 public class BookActivity extends BaseActivity {
@@ -92,10 +88,48 @@ public class BookActivity extends BaseActivity {
      * @param book Book
      */
     private void processResponse(Book book) {
+        
+
+        System.out.println("Url: " + book.getUrl());
+        System.out.println("ISBN: " + book.getIsbnTen());
+        System.out.println("ISBN13: " + book.getIsbnThirteen());
+        System.out.println("Description: " + book.getDescription());
+        if (book.getPublication() != null) {
+            int day = book.getPublication().getDayOfMonth();
+            String suffix = getLastDigitSuffix(day);
+            System.out.println(book.getPublication().toString("MMMM d'" + suffix + "' YYYY"));
+        }
+        System.out.println("Publisher: " + book.getPublisher());
+        System.out.println("Format: " + book.getFormat());
+        System.out.println("Pages: " + book.getPages());
+        for (int i = 0; i < book.getAuthors().size(); i++) {
+            Author a = book.getAuthors().get(i);
+            System.out.println(a.getId() + ", " + a.getName() + ", " + a.getRole());
+        }
+        System.out.println("Widget: " + book.getReviewsWidgetHtml());
+
         // Hide spinner
         findViewById(R.id.progressBarSelectedBook).setVisibility(View.GONE);
         findViewById(R.id.selectedBookData).setVisibility(View.VISIBLE);
-        System.out.println(book.getUrl());
+    }
+
+    /**
+     * Determines correct suffix for day digit.
+     *
+     * @param number day
+     * @return String
+     */
+    private String getLastDigitSuffix(int number) {
+        switch ((number < 20) ? number : number % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
     }
 
     /**
@@ -123,6 +157,8 @@ public class BookActivity extends BaseActivity {
                         .appendQueryParameter("text_only", "true")
                         .build();
 
+
+                System.out.println(uri.toString());
 
                 // Open connection
                 URL url = new URL(uri.toString());

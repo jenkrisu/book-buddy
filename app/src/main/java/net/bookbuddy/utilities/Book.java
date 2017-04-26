@@ -1,7 +1,8 @@
 package net.bookbuddy.utilities;
 
+import org.joda.time.LocalDate;
+
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class Book implements Serializable {
     /**
      * Date of publication.
      */
-    private Date publication;
+    private LocalDate publication;
 
     /**
      * Publisher of book.
@@ -66,83 +67,57 @@ public class Book implements Serializable {
     public Book() {
     }
 
+    public Book(String url, String isbnTen, String isbnThirteen, String description,
+                LocalDate publication, String publisher, String format, String pages,
+                List<Author> authors, String reviewsWidgetHtml) {
+        this.url = url;
+        this.isbnTen = isbnTen;
+        this.isbnThirteen = isbnThirteen;
+        this.description = description;
+        this.publication = publication;
+        this.publisher = publisher;
+        this.format = format;
+        this. pages = pages;
+        this.authors = authors;
+        this.reviewsWidgetHtml = reviewsWidgetHtml;
+    }
     public String getUrl() {
         return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getIsbnTen() {
         return isbnTen;
     }
 
-    public void setIsbnTen(String isbnTen) {
-        this.isbnTen = isbnTen;
-    }
-
     public String getIsbnThirteen() {
         return isbnThirteen;
-    }
-
-    public void setIsbnThirteen(String isbnThirteen) {
-        this.isbnThirteen = isbnThirteen;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getPublication() {
+    public LocalDate getPublication() {
         return publication;
-    }
-
-    public void setPublication(Date publication) {
-        this.publication = publication;
     }
 
     public String getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
     public String getFormat() {
         return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
     }
 
     public String getPages() {
         return pages;
     }
 
-    public void setPages(String pages) {
-        this.pages = pages;
-    }
-
     public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
-    }
-
     public String getReviewsWidgetHtml() {
         return reviewsWidgetHtml;
-    }
-
-    public void setReviewsWidgetHtml(String reviewsWidgetHtml) {
-        this.reviewsWidgetHtml = reviewsWidgetHtml;
     }
 }

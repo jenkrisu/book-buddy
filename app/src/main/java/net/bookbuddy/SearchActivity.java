@@ -149,16 +149,19 @@ public class SearchActivity extends BaseActivity {
         listView.setAdapter(customAdapter);
 
         // Add listener
-        listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
-            // Obs! Header is at position 0 and footer at last position.
-            int index = position - 1;
-            if (index > -1 && index < works.size()) {
-                Intent intent = new Intent(this, BookActivity.class);
-                intent.putExtra("work", works.get(index));
-                startActivity(intent);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Obs! Header is at position 0 and footer at last position.
+                int index = position - 1;
+                if (index > -1 && index < works.size()) {
+                    Intent intent = new Intent(getApplicationContext(), BookActivity.class);
+                    intent.putExtra("work", works.get(index));
+                    startActivity(intent);
 
+                }
             }
         });
+
     }
 
     /**
