@@ -5,7 +5,7 @@
     android:id="@+id/layoutContentSearch"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.bookbuddy.SearchActivity">
+    tools:context="net.bookbuddy.BookActivity">
 
     <include layout="@layout/nav_app_bar" />
 
@@ -23,27 +23,72 @@
 
         <LinearLayout
             android:id="@+id/selectedBookData"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/imageViewBook"
-                android:layout_width="112dp"
-                android:layout_height="148dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/content_description_book" />
-
-            <TextView
-                android:id="@+id/textViewBookTitle"
-                style="@style/Base.TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
+            <!-- Book data -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/imageViewBook"
+                    android:layout_width="112dp"
+                    android:layout_height="148dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/content_description_book" />
+
+                <TextView
+                    android:id="@+id/textViewBookTitle"
+                    style="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/textViewBookAuthors"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/textViewBookDescription"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light" />
+            </LinearLayout>
+
+            <!-- GoodReads attribution -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?android:attr/dividerVertical" />
+
+                <TextView
+                    android:id="@+id/textViewGoodReadsBookLink"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp" />
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -289,7 +289,7 @@ public class SearchActivity extends BaseActivity {
 
                     // Add GoodReads attribution and link to data source
                     String url = createGoodReadsAttribution();
-                    String attribution = "Data from <a href='" + url + "'>GoodReads</a>";
+                    String attribution = "Results from <a href='" + url + "'>GoodReads</a>";
                     goodReads.setClickable(true);
                     goodReads.setMovementMethod(LinkMovementMethod.getInstance());
                     goodReads.setText(Html.fromHtml(attribution));

@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import net.bookbuddy.utilities.*;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -88,12 +89,14 @@ public class BookActivity extends BaseActivity {
      * @param book Book
      */
     private void processResponse(Book book) {
-        
+        addAuthorsText(book);
+        addDescriptionText(book);
+        addGoodReadsAttribution(book);
 
+        /*
         System.out.println("Url: " + book.getUrl());
         System.out.println("ISBN: " + book.getIsbnTen());
         System.out.println("ISBN13: " + book.getIsbnThirteen());
-        System.out.println("Description: " + book.getDescription());
         if (book.getPublication() != null) {
             int day = book.getPublication().getDayOfMonth();
             String suffix = getLastDigitSuffix(day);
@@ -102,15 +105,66 @@ public class BookActivity extends BaseActivity {
         System.out.println("Publisher: " + book.getPublisher());
         System.out.println("Format: " + book.getFormat());
         System.out.println("Pages: " + book.getPages());
-        for (int i = 0; i < book.getAuthors().size(); i++) {
-            Author a = book.getAuthors().get(i);
-            System.out.println(a.getId() + ", " + a.getName() + ", " + a.getRole());
-        }
         System.out.println("Widget: " + book.getReviewsWidgetHtml());
+        */
 
         // Hide spinner
         findViewById(R.id.progressBarSelectedBook).setVisibility(View.GONE);
         findViewById(R.id.selectedBookData).setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Sets authors.
+     *
+     * @param book
+     */
+    private void addAuthorsText(Book book) {
+        TextView authors = (TextView) findViewById(R.id.textViewBookAuthors);
+        int size = book.getAuthors().size();
+
+        if (size == 1) {
+            authors.setText("By " + book.getAuthors().get(0).getName());
+
+        } else if (size > 1) {
+            String text = "By ";
+            for (int i = 0; i < size; i++) {
+                Author author = book.getAuthors().get(i);
+                text += author.getName();
+                if (author.getRole().length() > 0) {
+                    text += " (";
+                    text += author.getRole();
+                    text += ")";
+                }
+                if (i < size - 1) {
+                    text += ", ";
+                }
+            }
+            authors.setText(text);
+        }
+    }
+
+    /**
+     * Sets description.
+     *
+     * @param book
+     */
+    private void addDescriptionText(Book book) {
+        String descriptionHtml = book.getDescription();
+        TextView description = (TextView) findViewById(R.id.textViewBookDescription);
+        description.setText(Html.fromHtml(descriptionHtml));
+    }
+
+    /**
+     * Creates link to search results on GoodReads.
+     *
+     * @param book
+     */
+    private void addGoodReadsAttribution(Book book) {
+        TextView goodReads = (TextView) findViewById(R.id.textViewGoodReadsBookLink);
+        String attribution = "Data from <a href='" + book.getUrl() + "'>GoodReads</a>";
+        goodReads.setClickable(true);
+        goodReads.setMovementMethod(LinkMovementMethod.getInstance());
+        goodReads.setText(Html.fromHtml(attribution));
     }
 
     /**
