@@ -91,6 +91,11 @@ public class Book implements Serializable {
     private List<Author> authors;
 
     /**
+     * Reviews widget HTML.
+     */
+    private String reviewsWidgetHtml;
+
+    /**
      * Default constructor.
      */
     public Book() {
@@ -192,7 +197,7 @@ public class Book implements Serializable {
     /**
      * Gets ISBN10.
      *
-     * @return String ISBN 10
+     * @return String ISBN10
      */
     public String getIsbnTen() {
         return isbnTen;
@@ -263,7 +268,8 @@ public class Book implements Serializable {
 
     /**
      * Sets url of book page in GoodReads.
-     * @param url String
+     *
+     * @param url
      */
     public void setUrl(String url) {
         this.url = url;
@@ -271,8 +277,8 @@ public class Book implements Serializable {
 
     /**
      * Sets ISBN10 of book.
-
-     * @param isbnTen String
+     *
+     * @param isbnTen
      */
     public void setIsbnTen(String isbnTen) {
         this.isbnTen = isbnTen;
@@ -280,7 +286,7 @@ public class Book implements Serializable {
 
     /**
      * Sets ISBN13 of book.
-
+     *
      * @param isbnThirteen String
      */
     public void setIsbnThirteen(String isbnThirteen) {
@@ -289,8 +295,8 @@ public class Book implements Serializable {
 
     /**
      * Sets description of book.
-
-     * @param description String
+     *
+     * @param description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -298,8 +304,8 @@ public class Book implements Serializable {
 
     /**
      * Sets publication date of book.
-
-     * @param publication String
+     *
+     * @param publication
      */
     public void setPublication(Date publication) {
         this.publication = publication;
@@ -307,7 +313,8 @@ public class Book implements Serializable {
 
     /**
      * Sets publisher of book.
-     * @param publisher String
+     *
+     * @param publisher
      */
     public void setPublisher(String publisher) {
         this.publisher = publisher;
@@ -315,7 +322,7 @@ public class Book implements Serializable {
 
     /**
      * Sates format of book.
-
+     *
      * @param format String
      */
     public void setFormat(String format) {
@@ -324,8 +331,8 @@ public class Book implements Serializable {
 
     /**
      * Sets pages number of book.
-
-     * @param pages String
+     *
+     * @param pages
      */
     public void setPages(String pages) {
         this.pages = pages;
@@ -333,10 +340,28 @@ public class Book implements Serializable {
 
     /**
      * Sets authors of book.
-
-     * @param authors List<Author>
+     *
+     * @param authors
      */
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    /**
+     * Gets reviews widget HTML.
+     *
+     * @return String reviewsWidgetHtml
+     */
+    public String getReviewsWidgetHtml() {
+        return reviewsWidgetHtml;
+    }
+
+    /**
+     * Sets html for review widget.
+     *
+     * @param reviewsWidgetHtml
+     */
+    public void setReviewsWidgetHtml(String reviewsWidgetHtml) {
+        this.reviewsWidgetHtml = reviewsWidgetHtml;
     }
 }

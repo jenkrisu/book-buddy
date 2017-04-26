@@ -31,7 +31,7 @@ public class BookSearchAdapter extends ArrayAdapter<Work> {
     /**
      * Creates adapter.
      *
-     * @param works   ArrayList<Work>
+     * @param works   ArrayList
      * @param context context
      */
     public BookSearchAdapter(List<Work> works, Context context) {
@@ -45,7 +45,7 @@ public class BookSearchAdapter extends ArrayAdapter<Work> {
      * @param position    integer
      * @param convertView View
      * @param parent      ViewGroup
-     * @return convertView View
+     * @return View
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -68,34 +68,30 @@ public class BookSearchAdapter extends ArrayAdapter<Work> {
         Work work = getItem(position);
 
         if (work != null) {
-            TextView title = (TextView) convertView.findViewById(R.id.listItemBookTitle);
-            TextView author = (TextView) convertView.findViewById(R.id.listItemBookAuthor);
-            TextView published = (TextView) convertView.findViewById(R.id.listItemBookPublished);
-
+            // Show publication information only if publication year is found
             String year = work.getOriginalPublicationYear();
             if (year.equals("")) {
-                year = "-";
+                holder.published.setText("");
+            } else {
+                holder.published.setText("Published " + year);
             }
 
-            title.setText(work.getBestBook().getTitle());
-            author.setText("By " + work.getBestBook().getAuthorName());
-            published.setText("Published " + year);
+
+            holder.title.setText(work.getBestBook().getTitle());
+            holder.author.setText("By " + work.getBestBook().getAuthorName());
         }
 
         // Set book image or a placeholder, if image not available
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.listItemImage);
         String placeholder = "50x75-a91bf249278a81aabab721ef782c4a74.png";
         String url = work.getBestBook().getSmallImageUrl();
 
         // Set image
         if (url != null && url.length() > 0 && !url.contains(placeholder)) {
             // Picasso Library fetches asynchronously and caches images
-            Picasso.with(context)
-                    .load(url)
-                    .into(imageView);
+            Picasso.with(context).load(url).into(holder.image);
         } else {
             // Set own placeholder
-            imageView.setImageResource(R.drawable.ic_book_placeholder);
+            holder.image.setImageResource(R.drawable.ic_book_placeholder);
         }
 
         return convertView;

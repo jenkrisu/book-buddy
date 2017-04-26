@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Jenni on 19.4.2017.
  */
 
-public class DocumentParser {
+public class BookSearchResultsParser {
 
     /**
      * Parses document to ArrayList of Work objects.

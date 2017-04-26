@@ -240,7 +240,7 @@ public class SearchActivity extends BaseActivity {
             displayTotalResultsMessage(totalResults, query);
 
             if (totalResults > 0) {
-                works = DocumentParser.docToWorks(doc);
+                works = BookSearchResultsParser.docToWorks(doc);
                 if (works.isEmpty()) {
                     displaySnackBar(getResources().getString(R.string.results_loading_error));
                 }
