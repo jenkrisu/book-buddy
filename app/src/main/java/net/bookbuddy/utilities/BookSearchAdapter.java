@@ -53,16 +53,11 @@ public class BookSearchAdapter extends ArrayAdapter<Work> {
         ViewHolder holder;
 
         if (convertView == null) {
-            LayoutInflater vi =
-                    (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = vi.inflate(R.layout.list_item_work, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_work, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
-            // Prevent from showing old image when recycling convertView
             holder = (ViewHolder) convertView.getTag();
-            holder.image.setTag(null);
-            holder.image.setImageBitmap(null);
         }
 
         Work work = getItem(position);
@@ -75,8 +70,6 @@ public class BookSearchAdapter extends ArrayAdapter<Work> {
             } else {
                 holder.published.setText("Published " + year);
             }
-
-
             holder.title.setText(work.getBestBook().getTitle());
             holder.author.setText("By " + work.getBestBook().getAuthor().getName());
         }
@@ -85,14 +78,20 @@ public class BookSearchAdapter extends ArrayAdapter<Work> {
         String placeholder = "50x75-a91bf249278a81aabab721ef782c4a74.png";
         String url = work.getBestBook().getSmallImageUrl();
 
-        // Set image
-        if (url != null && url.length() > 0 && !url.contains(placeholder)) {
-            // Picasso Library fetches asynchronously and caches images
-            Picasso.with(context).load(url).into(holder.image);
-        } else {
-            // Set own placeholder
-            holder.image.setImageResource(R.drawable.ic_book_placeholder);
-        }
+        Picasso.with(context)
+                .load(url)
+                .into(holder.image, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        if (url.contains(placeholder)){
+                            holder.image.setImageResource(R.drawable.ic_book_placeholder);
+                        }
+                    }
+                    @Override
+                    public void onError() {
+                        holder.image.setImageResource(R.drawable.ic_book_placeholder);
+                    }
+                });
 
         return convertView;
     }
