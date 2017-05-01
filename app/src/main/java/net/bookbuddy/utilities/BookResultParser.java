@@ -36,9 +36,11 @@ public class BookResultParser {
             String pages = "";
             List<Author> authors = getAuthors(e);
 
-            System.out.println("Size:" + authors.size());
-
             String widget = "";
+
+            if (e.getElementsByTagName("publisher") != null) {
+                publisher = e.getElementsByTagName("publisher").item(0).getTextContent();
+            }
 
             if (e.getElementsByTagName("url") != null) {
                 url = e.getElementsByTagName("url").item(0).getTextContent();

@@ -44,28 +44,145 @@
                     android:layout_marginTop="20dp"
                     android:contentDescription="@string/content_description_book" />
 
+                <!-- Title, authors and orig publication year -->
                 <TextView
                     android:id="@+id/textViewBookTitle"
                     style="@style/Base.TextAppearance.AppCompat.Headline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewBookAuthors"
-                    style="@style/TextAppearance.AppCompat.Title"
+                    style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center"
+                    android:textColor="@android:color/primary_text_light" />
+
+                <TextView
+                    android:id="@+id/textViewBookOrigPublication"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="gone" />
+
+                <!-- TODO: Expanding ListView of shelves -->
+
+                <!-- Book description -->
+                <TextView
+                    android:id="@+id/textViewBookDescriptionTitle"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/book_description_title"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/textViewBookDescription"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
+
+                <!-- GoodReads Rating -->
+                <TextView
+                    android:id="@+id/textViewBookRatingTitle"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/book_rating_title"
                     android:textColor="@android:color/primary_text_light" />
+
+                <RatingBar
+                    android:id="@+id/ratingBarGoodReadsRating"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.5" />
+
+                <TextView
+                    android:id="@+id/textViewBookRatingAmount"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light" />
+
+                <!-- Book edition details -->
+                <TextView
+                    android:id="@+id/textViewBookEditionDetails"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/book_edition_details_title"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewBookPublication"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewBookPublisher"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewBookFormat"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewBookPages"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewBookIsbnTen"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewBookIsbnThirteen"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <!-- GoodReads attribution -->
