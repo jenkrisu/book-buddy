@@ -66,17 +66,17 @@ public class SearchActivity extends BaseActivity {
         // Create ListView
         listView = (ListView) findViewById(R.id.listViewSearchBooks);
 
-        // Add header to ListView
+        // Add non selectable header to ListView
         View footer = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.list_item_work_footer, null, false);
 
-        listView.addFooterView(footer);
+        listView.addFooterView(footer, "Footer", false);
 
-        // Add footer to ListView
+        // Add non selectable footer to ListView
         View header = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.list_item_work_header, null, false);
 
-        listView.addHeaderView(header);
+        listView.addHeaderView(header, "Header", false);
     }
 
     /**
