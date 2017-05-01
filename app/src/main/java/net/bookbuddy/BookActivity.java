@@ -9,12 +9,14 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import net.bookbuddy.utilities.*;
 
+import org.joda.time.LocalDate;
 import org.w3c.dom.Document;
 import org.w3c.dom.Text;
 
@@ -89,28 +91,46 @@ public class BookActivity extends BaseActivity {
      * @param book Book
      */
     private void processResponse(Book book) {
+        // Add information depending on availability from GoodReads
         addAuthorsText(book);
-        addDescriptionText(book);
-        addGoodReadsAttribution(book);
 
-        /*
-        System.out.println("Url: " + book.getUrl());
-        System.out.println("ISBN: " + book.getIsbnTen());
-        System.out.println("ISBN13: " + book.getIsbnThirteen());
-        if (book.getPublication() != null) {
-            int day = book.getPublication().getDayOfMonth();
-            String suffix = getLastDigitSuffix(day);
-            System.out.println(book.getPublication().toString("MMMM d'" + suffix + "' YYYY"));
+        addText("Published ",
+                work.getOriginalPublicationYear(),
+                findViewById(R.id.textViewBookOrigPublication));
+
+        addDescriptionText(book);
+
+        if (containsEditionDetails(book)) {
+            findViewById(R.id.textViewBookEditionDetails).setVisibility(View.VISIBLE);
+            addPublicationText(book);
+            addText("Publisher: ", book.getPublisher(), findViewById(R.id.textViewBookPublisher));
+            addText("Format: ", book.getFormat(), findViewById(R.id.textViewBookFormat));
+            addText("Pages: ", book.getPages(), findViewById(R.id.textViewBookPages));
+            addText("ISBN10: ", book.getIsbnTen(), findViewById(R.id.textViewBookIsbnTen));
+            addText("ISBN13: ", book.getIsbnThirteen(), findViewById(R.id.textViewBookIsbnThirteen));
         }
-        System.out.println("Publisher: " + book.getPublisher());
-        System.out.println("Format: " + book.getFormat());
-        System.out.println("Pages: " + book.getPages());
-        System.out.println("Widget: " + book.getReviewsWidgetHtml());
-        */
+
+        addRating();
+        addGoodReadsAttribution(book);
 
         // Hide spinner
         findViewById(R.id.progressBarSelectedBook).setVisibility(View.GONE);
         findViewById(R.id.selectedBookData).setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Checks if book contains edition details.
+     *
+     * @param book
+     * @return boolean
+     */
+    private boolean containsEditionDetails(Book book) {
+        return book.getPublication() != null
+                || book.getPublisher().length() > 0
+                || book.getFormat().length() > 0
+                || book.getPages().length() > 0
+                || book.getIsbnTen().length() > 0
+                || book.getIsbnThirteen().length() > 0;
     }
 
     /**
@@ -123,7 +143,8 @@ public class BookActivity extends BaseActivity {
         int size = book.getAuthors().size();
 
         if (size == 1) {
-            authors.setText("By " + book.getAuthors().get(0).getName());
+            String text = "By " + book.getAuthors().get(0).getName();
+            authors.setText(text);
 
         } else if (size > 1) {
             String text = "By ";
@@ -143,6 +164,26 @@ public class BookActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     * Add publication date of this edition,
+     *
+     * @param book
+     */
+    private void addPublicationText(Book book) {
+        LocalDate publication = book.getPublication();
+
+        if (publication != null) {
+            TextView textView = (TextView) findViewById(R.id.textViewBookPublication);
+            textView.setVisibility(View.VISIBLE);
+            int day = publication.getDayOfMonth();
+            String suffix = getLastDigitSuffix(day);
+            String text = "Published: "
+                    + publication.toString("MMMM d'" + suffix + "' YYYY");
+            textView.setText(text);
+        }
+    }
+
     /**
      * Sets description.
      *
@@ -150,8 +191,44 @@ public class BookActivity extends BaseActivity {
      */
     private void addDescriptionText(Book book) {
         String descriptionHtml = book.getDescription();
-        TextView description = (TextView) findViewById(R.id.textViewBookDescription);
-        description.setText(Html.fromHtml(descriptionHtml));
+
+        if (descriptionHtml.length() > 0) {
+            findViewById(R.id.textViewBookDescriptionTitle).setVisibility(View.VISIBLE);
+            TextView description = (TextView) findViewById(R.id.textViewBookDescription);
+            description.setVisibility(View.VISIBLE);
+            description.setText(Html.fromHtml(descriptionHtml));
+        }
+    }
+
+    /**
+     * Adds text to TextView if text is available and makes TextView visible.
+     *
+     * @param title
+     * @param content
+     * @param view
+     */
+    private void addText(String title, String content, View view) {
+        TextView textView = (TextView) view;
+        if (content.length() > 0) {
+            String text = title + content;
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(text);
+        }
+    }
+
+    private void addRating() {
+        TextView textView = (TextView) findViewById(R.id.textViewBookRatingAmount);
+        String text = "";
+
+        if (work.getRatingsCount().length() > 0) {
+            RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBarGoodReadsRating);
+            ratingBar.setRating(work.getAverageRating());
+            text = "Average " + work.getAverageRating() + " (" + work.getRatingsCount() + " ratings)";
+        } else {
+            text = "Average 0.0 (0 ratings)";
+        }
+
+        textView.setText(text);
     }
 
     /**
@@ -210,9 +287,6 @@ public class BookActivity extends BaseActivity {
                         .appendQueryParameter("id", bookId)
                         .appendQueryParameter("text_only", "true")
                         .build();
-
-
-                System.out.println(uri.toString());
 
                 // Open connection
                 URL url = new URL(uri.toString());
