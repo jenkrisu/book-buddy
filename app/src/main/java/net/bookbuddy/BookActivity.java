@@ -193,7 +193,6 @@ public class BookActivity extends BaseActivity {
         String descriptionHtml = book.getDescription();
 
         if (descriptionHtml.length() > 0) {
-            findViewById(R.id.textViewBookDescriptionTitle).setVisibility(View.VISIBLE);
             TextView description = (TextView) findViewById(R.id.textViewBookDescription);
             description.setVisibility(View.VISIBLE);
             description.setText(Html.fromHtml(descriptionHtml));

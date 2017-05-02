@@ -40,20 +40,19 @@
                     android:layout_width="112dp"
                     android:layout_height="148dp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp"
                     android:contentDescription="@string/content_description_book" />
 
                 <!-- Title, authors and orig publication year -->
                 <TextView
                     android:id="@+id/textViewBookTitle"
-                    style="@style/Base.TextAppearance.AppCompat.Headline"
+                    style="@style/Base.TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="4dp"
-                    android:gravity="center"
-                    android:textStyle="bold" />
+                    android:gravity="center" />
 
                 <TextView
                     android:id="@+id/textViewBookAuthors"
@@ -93,6 +92,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -102,7 +102,7 @@
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/book_rating_title"
                     android:textColor="@android:color/primary_text_light" />
@@ -129,7 +129,7 @@
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/book_edition_details_title"
                     android:textColor="@android:color/primary_text_light"
