@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.4">
+        android:layout_weight="0.3">
 
         <ImageView
             android:layout_width="match_parent"
@@ -27,7 +27,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:orientation="vertical">
 
         <TextView
@@ -85,25 +85,32 @@
             android:layout_margin="12dp"
             android:visibility="gone"/>
 
-        <Button
-            android:id="@+id/button_login"
-            android:onClick="login"
-            android:text="@string/account_login"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:background="@color/colorPrimary"
+        <LinearLayout
+            android:id="@+id/layout_loginButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="12dp"/>
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
-        <Button
-            android:id="@+id/button_skip"
-            android:onClick="continueToApp"
-            android:text="@string/account_skip"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            <Button
+                android:id="@+id/button_login"
+                android:onClick="login"
+                android:text="@string/account_login"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"/>
+
+            <Button
+                android:id="@+id/button_skip"
+                android:onClick="continueToApp"
+                android:text="@string/account_skip"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

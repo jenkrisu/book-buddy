@@ -55,23 +55,24 @@
             android:layout_margin="16dp"
             android:visibility="gone"/>
 
+        <Button
+            android:id="@+id/button_continue"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:background="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="center"
+            android:onClick="continueToApp"
+            android:text="@string/account_continue"
+            android:visibility="gone"/>
+
         <LinearLayout
+            android:id="@+id/layout_loginButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button_continue"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:background="@color/colorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:onClick="continueToApp"
-                android:text="@string/account_continue"
-                android:visibility="gone"/>
-
             <Button
                 android:id="@+id/button_login"
                 style="@style/Widget.AppCompat.Button.Colored"

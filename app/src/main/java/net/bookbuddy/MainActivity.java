@@ -228,8 +228,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Access token: " + token.getToken());
             System.out.println("Access token secret: " + token.getTokenSecret());
             findViewById(R.id.textView_loginInstructions).setVisibility(View.GONE);
-            findViewById(R.id.button_login).setVisibility(View.GONE);
-            findViewById(R.id.button_skip).setVisibility(View.GONE);
+            findViewById(R.id.layout_loginButtons).setVisibility(View.GONE);
             findViewById(R.id.textView_loginSuccess).setVisibility(View.VISIBLE);
             findViewById(R.id.button_continue).setVisibility(View.VISIBLE);
         }
