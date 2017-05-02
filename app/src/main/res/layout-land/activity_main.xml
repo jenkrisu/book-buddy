@@ -21,6 +21,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textView_loginInstructions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,11 +31,46 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/tertiary_text_light" />
 
+        <TextView
+            android:id="@+id/textView_loginSuccess"
+            android:text="@string/account_result_success"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/tertiary_text_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="16dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/textView_loginError"
+            android:text="@string/account_result_error"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/tertiary_text_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="16dp"
+            android:visibility="gone"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_continue"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:onClick="continueToApp"
+                android:text="@string/account_continue"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/button_login"
@@ -52,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:onClick="skip"
+                android:onClick="continueToApp"
                 android:text="@string/account_skip" />
 
         </LinearLayout>

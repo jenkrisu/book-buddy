@@ -51,11 +51,6 @@
             android:name=".BookActivity"
             android:label="Book"
             android:theme="@style/AppTheme.NoActionBar" />
-        <!-- AuthenticationActivity -->
-        <activity
-            android:name=".Authentication"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
     </application>
 
 </manifest>

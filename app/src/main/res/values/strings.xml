@@ -19,11 +19,11 @@
     </string>
     <string name="account_login">Login</string>
     <string name="account_skip">Skip</string>
+    <string name="snackbar_login_error">Unfortunately an error occurred logging in</string>
 
-    <!-- Auth Activity -->
     <string name="account_continue">Continue</string>
     <string name="account_result_success">Login successful.</string>
-    <string name="account_result_error">Oops! You denied Book Buddy access.</string>
+    <string name="account_result_error">Login cancelled.</string>
 
     <!-- Search Activity -->
     <string name="search_title">Search Books</string>
@@ -43,4 +43,5 @@
     <!-- Error messages for SnackBars -->
     <string name="results_loading_error">Unfortunately an error occurred loading results</string>
     <string name="http_books_search_error">Unfortunately an error occurred searching books</string>
+
 </resources>
