@@ -35,22 +35,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: Check if logged in
-        boolean loggedIn = false;
-
-        if (loggedIn) {
+        if (hasLoggedIn()) {
             startActivity(new Intent(this, SearchActivity.class));
+        } else {
+            // Handle OAuth response
+            Intent intent = getIntent();
+            handleOAuthResponse(intent);
         }
-
-        // Handle OAuth response
-        Intent intent = getIntent();
-        handleOAuthResponse(intent);
     }
 
+    /**
+     * Saves request token and secret to shared preferences if user has chosen to login.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         saveRequestPreferences();
+    }
+
+    /**
+     * Checks if user has logged in previously.
+     *
+     * @return boolean logged in or not
+     */
+    private boolean hasLoggedIn() {
+        SharedPreferences preferences =
+                getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
+
+        return preferences.contains("accessToken") && preferences.contains("accessTokenSecret");
     }
 
     /**
@@ -135,9 +147,11 @@ public class MainActivity extends AppCompatActivity {
                     // Fetches request token and request token secret from shared preferences
                     getRequestPreferences();
 
-                    // Gets access token
-                    AccessTokenTask accessTokenTask = new AccessTokenTask();
-                    accessTokenTask.execute(this.requestToken);
+                    if (this.requestToken != null) {
+                        // Gets access token
+                        AccessTokenTask accessTokenTask = new AccessTokenTask();
+                        accessTokenTask.execute(this.requestToken);
+                    }
                 }
             }
         }
@@ -225,13 +239,27 @@ public class MainActivity extends AppCompatActivity {
      */
     private void processAccessTokenResponse(OAuth1AccessToken token) {
         if (token != null) {
-            System.out.println("Access token: " + token.getToken());
-            System.out.println("Access token secret: " + token.getTokenSecret());
+            saveAccessPreferences(token);
             findViewById(R.id.textView_loginInstructions).setVisibility(View.GONE);
             findViewById(R.id.layout_loginButtons).setVisibility(View.GONE);
             findViewById(R.id.textView_loginSuccess).setVisibility(View.VISIBLE);
             findViewById(R.id.button_continue).setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * Saves access token and secret to shared preferences.
+     *
+     * @param token OAuth1AccessToken access token
+     */
+    private void saveAccessPreferences(OAuth1AccessToken token) {
+        SharedPreferences.Editor editor =
+                getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE).edit();
+
+        editor.putString("accessToken", token.getToken());
+        editor.putString("accessTokenSecret", token.getTokenSecret());
+
+        editor.apply();
     }
 
     /**

@@ -1,6 +1,7 @@
 package net.bookbuddy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import net.bookbuddy.utilities.Global;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,9 +33,8 @@ public class BaseActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         Menu menu = navigationView.getMenu();
-        // TODO: Checked if logged in
-        boolean loggedIn = false;
-        if (loggedIn) {
+
+        if (showLogin()) {
             menu.findItem(R.id.nav_logout).setVisible(true);
         } else {
             menu.findItem(R.id.nav_login).setVisible(true);
@@ -105,9 +107,11 @@ public class BaseActivity extends AppCompatActivity
             case R.id.nav_read:
                 break;
             case R.id.nav_login:
-                startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.nav_logout:
+                removeTokenPreferences();
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             default:
                 break;
@@ -117,4 +121,30 @@ public class BaseActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    /**
+     * Removes request and access tokens and secrets from shared preferences.
+     */
+    private void removeTokenPreferences() {
+        SharedPreferences.Editor editor =
+                getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.remove("requestToken");
+        editor.remove("requestTokenSecret");
+        editor.remove("accessToken");
+        editor.remove("accessTokenSecret");
+        editor.apply();
+    }
+
+    /**
+     * Checks whether shared preferences contain access tokens.
+     *
+     * @return boolean access token found or not
+     */
+    private boolean showLogin() {
+        SharedPreferences preferences =
+                getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
+
+        return preferences.contains("accessToken") && preferences.contains("accessTokenSecret");
+    }
+
 }
