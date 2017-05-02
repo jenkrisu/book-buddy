@@ -6,6 +6,9 @@ package net.bookbuddy.utilities;
 
 public class Global {
 
+    /**
+     * Shared preferences name.
+     */
     public final static String MY_PREFS_NAME = "BookBuddyFile";
 
 }
