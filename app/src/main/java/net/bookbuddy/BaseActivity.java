@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +28,16 @@ public class BaseActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        Menu menu = navigationView.getMenu();
+        // TODO: Checked if logged in
+        boolean loggedIn = false;
+        if (loggedIn) {
+            menu.findItem(R.id.nav_logout).setVisible(true);
+        } else {
+            menu.findItem(R.id.nav_login).setVisible(true);
+        }
+
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -92,6 +103,11 @@ public class BaseActivity extends AppCompatActivity
             case R.id.nav_reading:
                 break;
             case R.id.nav_read:
+                break;
+            case R.id.nav_login:
+                startActivity(new Intent(this,MainActivity.class));
+                break;
+            case R.id.nav_logout:
                 break;
             default:
                 break;

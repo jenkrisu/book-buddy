@@ -10,6 +10,15 @@
     <string name="nav_currently_reading">Currently Reading</string>
     <string name="nav_read">Read</string>
     <string name="nav_all_shelves">All Shelves</string>
+    <string name="nav_login">Login</string>
+    <string name="nav_logout">Logout</string>
+
+    <!-- Main Activity -->
+    <string name="add_account_instructions">
+        Login to GoodReads account \n to access all features.
+    </string>
+    <string name="account_login">Login</string>
+    <string name="account_skip">Skip</string>
 
     <!-- Search Activity -->
     <string name="search_title">Search Books</string>

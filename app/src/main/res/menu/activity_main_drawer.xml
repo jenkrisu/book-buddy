@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group>
+    <group android:id="@+id/group_search">
         <item
             android:icon="@android:drawable/ic_menu_search"
             android:id="@+id/nav_search_books"
@@ -33,5 +33,18 @@
             </group>
         </menu>
     </item>
+
+    <group android:id="@+id/group_login">
+        <item
+            android:icon="@drawable/ic_input_black"
+            android:id="@+id/nav_login"
+            android:visible="false"
+            android:title="@string/nav_login" />
+        <item
+            android:icon="@drawable/ic_input_black"
+            android:id="@+id/nav_logout"
+            android:visible="false"
+            android:title="@string/nav_logout" />
+    </group>
 
 </menu>
