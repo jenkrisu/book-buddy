@@ -9,7 +9,6 @@
         android:layout_height="0dp"
         android:layout_weight="0.3"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
         android:gravity="bottom"
         android:text="@string/app_name"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"

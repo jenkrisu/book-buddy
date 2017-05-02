@@ -20,11 +20,17 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="book.buddy" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- SearchActivity -->
@@ -41,9 +47,15 @@
                 android:resource="@xml/searchable" />
         </activity>
         <!-- BookActivity -->
-        <activity android:name=".BookActivity"
+        <activity
+            android:name=".BookActivity"
             android:label="Book"
             android:theme="@style/AppTheme.NoActionBar" />
+        <!-- AuthenticationActivity -->
+        <activity
+            android:name=".Authentication"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

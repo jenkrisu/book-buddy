@@ -20,6 +20,11 @@
     <string name="account_login">Login</string>
     <string name="account_skip">Skip</string>
 
+    <!-- Auth Activity -->
+    <string name="account_continue">Continue</string>
+    <string name="account_result_success">Login successful.</string>
+    <string name="account_result_error">Oops! You denied Book Buddy access.</string>
+
     <!-- Search Activity -->
     <string name="search_title">Search Books</string>
     <string name="search_hint">Title / Author / ISBN</string>
