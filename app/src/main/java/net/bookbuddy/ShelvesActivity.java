@@ -2,12 +2,11 @@ package net.bookbuddy;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import net.bookbuddy.utilities.DownloadCallback;
-import net.bookbuddy.utilities.DownloadTask;
+import net.bookbuddy.utilities.DownloadXmlTask;
 import net.bookbuddy.utilities.Global;
 
 import java.net.MalformedURLException;
@@ -43,11 +42,11 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
                     .appendQueryParameter("user_id", userId)
                     .build();
 
-            DownloadTask downloadTask = new DownloadTask();
-            downloadTask.callback = this;
+            DownloadXmlTask downloadXmlTask = new DownloadXmlTask();
+            downloadXmlTask.callback = this;
 
             try {
-                downloadTask.execute(new URL(uri.toString()));
+                downloadXmlTask.execute(new URL(uri.toString()));
             } catch (MalformedURLException ex) {
                 ex.printStackTrace();
             }
@@ -55,7 +54,7 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
     }
 
     @Override
-    public void processFinish(DownloadTask.Result result) {
+    public void processFinish(DownloadXmlTask.Result result) {
         System.out.println("STATUS:" + result.status);
         findViewById(R.id.progressBarShelves).setVisibility(View.GONE);
     }

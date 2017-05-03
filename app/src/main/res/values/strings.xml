@@ -29,7 +29,8 @@
     <string name="content_description_books">Image of book pile</string>
     <string name="search_hint">Title / Author / ISBN</string>
     <string name="search_message">Search books by title, author \n or ISBN number.</string>
-    s
+    <string name="snackbar_load_error">Unfortunately an error occurred loading results.</string>
+
     <!-- Book Activity -->
     <string name="content_description_book">Image of book</string>
     <string name="book_description_title">Book Description</string>

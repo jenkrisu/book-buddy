@@ -6,6 +6,11 @@ package net.bookbuddy.utilities;
 
 public interface DownloadCallback {
 
-    void processFinish(DownloadTask.Result result);
+    /**
+     * Handles result from download task.
+     *
+     * @param result DownloadTask.Result with document and status
+     */
+    void processFinish(DownloadXmlTask.Result result);
 
 }
