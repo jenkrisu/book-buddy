@@ -19,7 +19,7 @@
     </string>
     <string name="account_login">Login</string>
     <string name="account_skip">Skip</string>
-    <string name="snackbar_login_error">Unfortunately an error occurred logging in</string>
+    <string name="snackbar_login_error">Unfortunately an error occurred logging in.</string>
 
     <string name="account_continue">Continue</string>
     <string name="account_result_success">Login successful.</string>
@@ -41,7 +41,7 @@
     <string name="book_rating_title">Readers\' Rating</string>
 
     <!-- Error messages for SnackBars -->
-    <string name="results_loading_error">Unfortunately an error occurred loading results</string>
-    <string name="http_books_search_error">Unfortunately an error occurred searching books</string>
+    <string name="results_loading_error">Unfortunately an error occurred loading results.</string>
+    <string name="http_books_search_error">Unfortunately an error occurred searching books.</string>
 
 </resources>

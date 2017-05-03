@@ -12,20 +12,36 @@ import android.view.View;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.model.OAuth1RequestToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
 import net.bookbuddy.utilities.GoodReadsApi;
 import net.bookbuddy.utilities.Global;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 
 /**
- * Shows welcome message and opens the application.
+ * Launches app and handles OAuth authentication.
  */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Request token.
+     */
     private OAuth1RequestToken requestToken;
-
-    private OAuth1AccessToken accessToken;
 
     /**
      * Creates activity.
@@ -64,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences =
                 getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
 
-        return preferences.contains("accessToken") && preferences.contains("accessTokenSecret");
+        return preferences.contains("loggedIn") && preferences.getBoolean("loggedIn", false);
     }
 
     /**
@@ -223,19 +239,6 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(token);
             processRequestTokenResponse(token);
         }
-
-        /**
-         * Displays SnackBar.
-         *
-         * @param message String
-         */
-        private void displaySnackBar(String message) {
-            runOnUiThread(() -> {
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                        message, Snackbar.LENGTH_LONG);
-                snackbar.show();
-            });
-        }
     }
 
     /**
@@ -245,14 +248,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void processAccessTokenResponse(OAuth1AccessToken token) {
         if (token != null) {
-            this.accessToken = token;
             saveAccessPreferences(token);
-            findViewById(R.id.progressBarLogin).setVisibility(View.GONE);
-            findViewById(R.id.textView_loginSuccess).setVisibility(View.VISIBLE);
-            findViewById(R.id.button_continue).setVisibility(View.VISIBLE);
+            UserIdTask userIdTask = new UserIdTask();
+            userIdTask.execute(token);
         }
-
-        // TODO: Another asynctask to get the user id... THEN user can be logged in.
     }
 
     /**
@@ -311,19 +310,116 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(token);
             processAccessTokenResponse(token);
         }
+    }
+
+    /**
+     * Handles response from UserIdTask.
+     *
+     * @param values List user id and name
+     */
+    private void processUserIdResponse(List<String> values) {
+        findViewById(R.id.progressBarLogin).setVisibility(View.GONE);
+
+        if (values != null && values.size() > 0) {
+            SharedPreferences.Editor editor =
+                    getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE).edit();
+
+            editor.putBoolean("loggedIn", true);
+            editor.putString("userId", values.get(0));
+
+            // Add id
+            if (values.size() == 2) {
+                editor.putString("userName", values.get(1));
+            }
+
+            editor.apply();
+
+            findViewById(R.id.textView_loginSuccess).setVisibility(View.VISIBLE);
+            findViewById(R.id.button_continue).setVisibility(View.VISIBLE);
+
+        } else {
+            findViewById(R.id.textView_loginInstructions).setVisibility(View.VISIBLE);
+            findViewById(R.id.layout_loginButtons).setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Contacts server for user id with AsyncTask.
+     */
+    private class UserIdTask extends AsyncTask<OAuth1AccessToken, Integer, List<String>> {
 
         /**
-         * Displays SnackBar.
+         * Gets user id and possibly user name (optional) from GoodReads.
          *
-         * @param message String
+         * @param args array OAuth1AccessToken
+         * @return List<String> values user id and name
          */
-        private void displaySnackBar(String message) {
-            runOnUiThread(() -> {
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                        message, Snackbar.LENGTH_LONG);
-                snackbar.show();
-            });
+        @Override
+        protected List<String> doInBackground(OAuth1AccessToken... args) {
+            List<String> values = new ArrayList<String>();
+            OAuth1AccessToken accessToken = args[0];
+
+            OAuth10aService service = new ServiceBuilder()
+                    .apiKey(BuildConfig.GOOD_READS_API_KEY)
+                    .apiSecret(BuildConfig.GOOD_READS_API_SECRET)
+                    .build(GoodReadsApi.instance());
+
+            try {
+                OAuthRequest request = new OAuthRequest(Verb.GET,
+                        "https://www.goodreads.com/api/auth_user",
+                        service);
+                service.signRequest(accessToken, request);
+                Response response = request.send();
+
+                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                InputSource src = new InputSource();
+                src.setCharacterStream(new StringReader(response.getBody()));
+                Document doc = builder.parse(src);
+
+                // Get user id
+                NamedNodeMap map = doc.getElementsByTagName("user").item(0).getAttributes();
+                Node userIdNode = map.getNamedItem("id");
+                String id = userIdNode.getNodeValue();
+                values.add(id);
+
+                // Get name
+                if (doc.getElementsByTagName("name") != null
+                        && doc.getElementsByTagName("name").getLength() > 0) {
+                    String name = doc.getElementsByTagName("name").item(0).getTextContent();
+                    values.add(name);
+                }
+
+            } catch (Exception ex) {
+                displaySnackBar(getResources().getString(R.string.snackbar_login_error));
+                ex.printStackTrace();
+            }
+
+            return values;
         }
+
+        /**
+         * Returns user id.
+         *
+         * @param values List
+         */
+        @Override
+        protected void onPostExecute(List<String> values) {
+            super.onPostExecute(values);
+            processUserIdResponse(values);
+        }
+    }
+
+    /**
+     * Displays SnackBar.
+     *
+     * @param message String
+     */
+    private void displaySnackBar(String message) {
+        runOnUiThread(() -> {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                    message, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        });
     }
 
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import net.bookbuddy.utilities.Global;
 
@@ -32,13 +33,16 @@ public class BaseActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        // Set login or logout button
         Menu menu = navigationView.getMenu();
-
         if (showLogin()) {
             menu.findItem(R.id.nav_logout).setVisible(true);
         } else {
             menu.findItem(R.id.nav_login).setVisible(true);
         }
+
+        // Sets user name to drawer
+        setUserName(navigationView);
 
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -123,15 +127,28 @@ public class BaseActivity extends AppCompatActivity
     }
 
     /**
+     * Sets user name to navigation drawer.
+     *
+     * @param navigationView NavigationView
+     */
+    private void setUserName(NavigationView navigationView) {
+        SharedPreferences preferences =
+                getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
+
+        if (preferences.contains("userName")) {
+            View header = navigationView.getHeaderView(0);
+            TextView textView = (TextView) header.findViewById(R.id.textView_drawerName);
+            textView.setText(preferences.getString("userName", ""));
+        }
+    }
+
+    /**
      * Removes request and access tokens and secrets from shared preferences.
      */
     private void removeTokenPreferences() {
         SharedPreferences.Editor editor =
                 getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.remove("requestToken");
-        editor.remove("requestTokenSecret");
-        editor.remove("accessToken");
-        editor.remove("accessTokenSecret");
+        editor.clear();
         editor.apply();
     }
 
@@ -144,7 +161,7 @@ public class BaseActivity extends AppCompatActivity
         SharedPreferences preferences =
                 getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
 
-        return preferences.contains("accessToken") && preferences.contains("accessTokenSecret");
+        return preferences.contains("loggedIn") && preferences.getBoolean("loggedIn", false);
     }
 
 }
