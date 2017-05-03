@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     private OAuth1RequestToken requestToken;
 
+    private OAuth1AccessToken accessToken;
+
     /**
      * Creates activity.
      *
@@ -141,9 +143,13 @@ public class MainActivity extends AppCompatActivity {
                 // If 0, user denied access
                 if (authorize.equals("0")) {
                     findViewById(R.id.textView_loginInstructions).setVisibility(View.GONE);
-                    findViewById(R.id.textView_loginError).setVisibility(View.VISIBLE);
+                    findViewById(R.id.textView_loginCancel).setVisibility(View.VISIBLE);
                     // If 1, user granted access
                 } else if (authorize.equals("1")) {
+                    findViewById(R.id.textView_loginInstructions).setVisibility(View.GONE);
+                    findViewById(R.id.layout_loginButtons).setVisibility(View.GONE);
+                    findViewById(R.id.progressBarLogin).setVisibility(View.VISIBLE);
+
                     // Fetches request token and request token secret from shared preferences
                     getRequestPreferences();
 
@@ -239,12 +245,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void processAccessTokenResponse(OAuth1AccessToken token) {
         if (token != null) {
+            this.accessToken = token;
             saveAccessPreferences(token);
-            findViewById(R.id.textView_loginInstructions).setVisibility(View.GONE);
-            findViewById(R.id.layout_loginButtons).setVisibility(View.GONE);
+            findViewById(R.id.progressBarLogin).setVisibility(View.GONE);
             findViewById(R.id.textView_loginSuccess).setVisibility(View.VISIBLE);
             findViewById(R.id.button_continue).setVisibility(View.VISIBLE);
         }
+
+        // TODO: Another asynctask to get the user id... THEN user can be logged in.
     }
 
     /**

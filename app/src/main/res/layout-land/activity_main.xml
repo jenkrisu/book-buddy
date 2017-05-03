@@ -31,6 +31,14 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/tertiary_text_light" />
 
+        <ProgressBar
+            android:id="@+id/progressBarLogin"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/textView_loginSuccess"
             android:text="@string/account_result_success"
@@ -45,7 +53,7 @@
 
         <TextView
             android:id="@+id/textView_loginError"
-            android:text="@string/account_result_error"
+            android:text="@string/account_result_cancel"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/tertiary_text_light"
             android:layout_width="wrap_content"
