@@ -15,7 +15,7 @@
 
     <!-- Main Activity -->
     <string name="add_account_instructions">
-        Login to GoodReads account \n to access all features.
+        Login to Goodreads account \n to access all features.
     </string>
     <string name="account_login">Login</string>
     <string name="account_skip">Skip</string>
@@ -36,6 +36,11 @@
     <string name="book_description_title">Book Description</string>
     <string name="book_edition_details_title">Edition Details</string>
     <string name="book_rating_title">Readers\' Rating</string>
+    <string-array name="shelves_array">
+        <item>Want to Read</item>
+        <item>Currently Reading</item>
+        <item>Read</item>
+    </string-array>
 
     <!-- Error messages for SnackBars -->
     <string name="results_loading_error">Unfortunately an error occurred loading results.</string>

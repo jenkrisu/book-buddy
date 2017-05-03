@@ -8,8 +8,10 @@ import android.support.design.widget.Snackbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -54,6 +56,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
         if (intent.hasExtra("work")) {
             work = (Work) intent.getSerializableExtra("work");
             addInitialData();
+            addSpinner();
             fetchBook();
         }
     }
@@ -98,6 +101,14 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
         }
     }
 
+    private void addSpinner() {
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_shelves);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.shelves_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+    }
+
     /**
      * Add title, image and progressbar.
      */
@@ -122,7 +133,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
             // Picasso Library fetches asynchronously and caches images
             Picasso.with(this).load(url).into(imageView);
         } else {
-            // If image url is GoodReads placeholder, add own placeholder
+            // If image url is Goodreads placeholder, add own placeholder
             imageView.setImageResource(R.drawable.ic_book_placeholder);
         }
     }
@@ -133,7 +144,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
      * @param book Book
      */
     private void renderBookData(Book book) {
-        // Add information depending on availability from GoodReads
+        // Add information depending on availability from Goodreads
         addAuthorsText(book);
 
         addText("Published ",
@@ -153,7 +164,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
         }
 
         addRating();
-        addGoodReadsAttribution(book);
+        addGoodreadsAttribution(book);
 
         // Hide spinner
         findViewById(R.id.progressBarSelectedBook).setVisibility(View.GONE);
@@ -265,7 +276,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
         String text;
 
         if (work.getRatingsCount().length() > 0) {
-            RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBarGoodReadsRating);
+            RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBarGoodreadsRating);
             ratingBar.setRating(work.getAverageRating());
             text = "Average " + work.getAverageRating() + " (" + work.getRatingsCount() + " ratings)";
         } else {
@@ -280,12 +291,12 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
      *
      * @param book Book
      */
-    private void addGoodReadsAttribution(Book book) {
-        TextView goodReads = (TextView) findViewById(R.id.textViewGoodReadsBookLink);
-        String attribution = "Data from <a href='" + book.getUrl() + "'>GoodReads</a>";
-        goodReads.setClickable(true);
-        goodReads.setMovementMethod(LinkMovementMethod.getInstance());
-        goodReads.setText(Html.fromHtml(attribution));
+    private void addGoodreadsAttribution(Book book) {
+        TextView goodreads = (TextView) findViewById(R.id.textViewGoodreadsBookLink);
+        String attribution = "Data from <a href='" + book.getUrl() + "'>Goodreads</a>";
+        goodreads.setClickable(true);
+        goodreads.setMovementMethod(LinkMovementMethod.getInstance());
+        goodreads.setText(Html.fromHtml(attribution));
     }
 
     /**

@@ -242,7 +242,7 @@ public class SearchActivity extends BaseActivity implements DownloadCallback {
      */
     private void displayTotalResultsMessage(int totalResults) {
         TextView textView = (TextView) findViewById(R.id.textViewSearchMessage);
-        TextView goodReads = (TextView) findViewById(R.id.textViewGoodReadsData);
+        TextView goodreads = (TextView) findViewById(R.id.textViewGoodreadsData);
         String message = "";
 
         if (totalResults > 0) {
@@ -256,12 +256,12 @@ public class SearchActivity extends BaseActivity implements DownloadCallback {
                         + " Showing 20 best results.";
             }
 
-            // Add GoodReads attribution and link to data source
-            String url = createGoodReadsAttribution();
-            String attribution = "Results from <a href='" + url + "'>GoodReads</a>";
-            goodReads.setClickable(true);
-            goodReads.setMovementMethod(LinkMovementMethod.getInstance());
-            goodReads.setText(Html.fromHtml(attribution));
+            // Add Goodreads attribution and link to data source
+            String url = createGoodreadsAttribution();
+            String attribution = "Results from <a href='" + url + "'>Goodreads</a>";
+            goodreads.setClickable(true);
+            goodreads.setMovementMethod(LinkMovementMethod.getInstance());
+            goodreads.setText(Html.fromHtml(attribution));
 
         } else {
             message = "No results found for search \"" + this.query + "\".";
@@ -276,7 +276,7 @@ public class SearchActivity extends BaseActivity implements DownloadCallback {
      *
      * @return String link
      */
-    private String createGoodReadsAttribution() {
+    private String createGoodreadsAttribution() {
         Uri uri = Uri.parse("http://www.goodreads.com/search")
                 .buildUpon()
                 .appendQueryParameter("q", this.query)

@@ -17,7 +17,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
-import net.bookbuddy.utilities.GoodReadsApi;
+import net.bookbuddy.utilities.GoodreadsApi;
 import net.bookbuddy.utilities.Global;
 
 import org.w3c.dom.Document;
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             OAuth10aService service = new ServiceBuilder()
                     .apiKey(BuildConfig.GOOD_READS_API_KEY)
                     .apiSecret(BuildConfig.GOOD_READS_API_SECRET)
-                    .build(GoodReadsApi.instance());
+                    .build(GoodreadsApi.instance());
 
             try {
                 token = service.getRequestToken();
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
             OAuth10aService service = new ServiceBuilder()
                     .apiKey(BuildConfig.GOOD_READS_API_KEY)
                     .apiSecret(BuildConfig.GOOD_READS_API_SECRET)
-                    .build(GoodReadsApi.instance());
+                    .build(GoodreadsApi.instance());
 
             try {
                 token = service.getAccessToken(requestToken, "1");
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
             OAuth10aService service = new ServiceBuilder()
                     .apiKey(BuildConfig.GOOD_READS_API_KEY)
                     .apiSecret(BuildConfig.GOOD_READS_API_SECRET)
-                    .build(GoodReadsApi.instance());
+                    .build(GoodreadsApi.instance());
 
             try {
                 OAuthRequest request = new OAuthRequest(Verb.GET,

@@ -6,7 +6,7 @@
     android:padding="12dp">
 
     <TextView
-        android:id="@+id/textViewGoodReadsData"
+        android:id="@+id/textViewGoodreadsData"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

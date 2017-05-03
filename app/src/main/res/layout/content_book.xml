@@ -73,7 +73,13 @@
                     android:gravity="center"
                     android:visibility="gone" />
 
-                <!-- TODO: Expanding ListView of shelves -->
+                <!-- Shelves -->
+                <Spinner
+                    android:id="@+id/spinner_shelves"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp" />
 
                 <!-- Book description -->
                 <TextView
@@ -96,7 +102,7 @@
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
-                <!-- GoodReads Rating -->
+                <!-- Goodreads Rating -->
                 <TextView
                     android:id="@+id/textViewBookRatingTitle"
                     style="@style/TextAppearance.AppCompat.Title"
@@ -108,7 +114,7 @@
                     android:textColor="@android:color/primary_text_light" />
 
                 <RatingBar
-                    android:id="@+id/ratingBarGoodReadsRating"
+                    android:id="@+id/ratingBarGoodreadsRating"
                     style="?android:attr/ratingBarStyleIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -185,14 +191,14 @@
 
             </LinearLayout>
 
-            <!-- GoodReads attribution -->
+            <!-- Goodreads attribution -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textViewGoodReadsBookLink"
+                    android:id="@+id/textViewGoodreadsBookLink"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

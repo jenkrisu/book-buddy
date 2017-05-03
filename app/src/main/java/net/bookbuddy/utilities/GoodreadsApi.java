@@ -10,7 +10,7 @@ import com.github.scribejava.core.model.OAuth1RequestToken;
 /**
  * Handles OAuth1 to GoodReads Api as per ScribeJava Custom Api guidelines.
  */
-public class GoodReadsApi extends DefaultApi10a {
+public class GoodreadsApi extends DefaultApi10a {
 
     /**
      * Authorization url.
@@ -20,22 +20,22 @@ public class GoodReadsApi extends DefaultApi10a {
     /**
      * Default constructor.
      */
-    protected GoodReadsApi() {
+    protected GoodreadsApi() {
     }
 
     /**
      * Instance holder.
      */
     private static class InstanceHolder {
-        private static final GoodReadsApi INSTANCE = new GoodReadsApi();
+        private static final GoodreadsApi INSTANCE = new GoodreadsApi();
     }
 
     /**
      * Returns instance.
      *
-     * @return GoodReadsApi
+     * @return GoodreadsApi
      */
-    public static GoodReadsApi instance() {
+    public static GoodreadsApi instance() {
         return InstanceHolder.INSTANCE;
     }
 
