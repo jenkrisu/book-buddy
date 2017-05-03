@@ -70,13 +70,13 @@ public class SearchActivity extends BaseActivity {
 
         // Add non selectable header to ListView
         View footer = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.list_item_work_footer, null, false);
+                .inflate(R.layout.list_item_footer, null, false);
 
         listView.addFooterView(footer, "Footer", false);
 
         // Add non selectable footer to ListView
         View header = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.list_item_work_header, null, false);
+                .inflate(R.layout.list_item_header, null, false);
 
         listView.addHeaderView(header, "Header", false);
     }

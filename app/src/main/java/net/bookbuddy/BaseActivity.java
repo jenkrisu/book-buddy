@@ -105,6 +105,7 @@ public class BaseActivity extends AppCompatActivity
                 break;
             case R.id.nav_bookshelves:
                 checkLoginStatus();
+                startActivity(new Intent(this, ShelvesActivity.class));
                 break;
             case R.id.nav_to_read:
                 checkLoginStatus();
