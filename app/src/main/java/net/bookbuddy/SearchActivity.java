@@ -285,7 +285,7 @@ public class SearchActivity extends BaseActivity implements DownloadCallback {
     }
 
     /**
-     * Displays Snacbar with error message.
+     * Displays Snackbar with error message.
      */
     private void displaySnackbar() {
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),

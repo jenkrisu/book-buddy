@@ -25,10 +25,11 @@ import org.w3c.dom.Document;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 
-public class BookActivity extends BaseActivity {
+public class BookActivity extends BaseActivity implements DownloadCallback {
 
     /**
      * Work to display.
@@ -53,8 +54,47 @@ public class BookActivity extends BaseActivity {
         if (intent.hasExtra("work")) {
             work = (Work) intent.getSerializableExtra("work");
             addInitialData();
-            Task task = new Task();
-            task.execute(work.getBestBook().getId());
+            fetchBook();
+        }
+    }
+
+    /**
+     * Fetches book data.
+     */
+    private void fetchBook() {
+        DownloadXmlTask downloadXmlTask = new DownloadXmlTask();
+        downloadXmlTask.callback = this;
+
+        Uri uri = Uri.parse("http://www.goodreads.com/book/show")
+                .buildUpon()
+                .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
+                .appendQueryParameter("id", work.getBestBook().getId())
+                .appendQueryParameter("text_only", "true")
+                .build();
+
+        try {
+            downloadXmlTask.execute(new URL(uri.toString()));
+        } catch (MalformedURLException ex) {
+            displaySnackbar();
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void processFinish(DownloadXmlTask.Result result) {
+        Book book;
+
+        // If document parsed and has tag book
+        if (result.document != null && result.document.getElementsByTagName("book") != null) {
+            book = BookResultParser.docToBook(result.document);
+
+            if (book != null) {
+                renderBookData(book);
+            } else {
+                displaySnackbar();
+            }
+        } else {
+            displaySnackbar();
         }
     }
 
@@ -88,11 +128,11 @@ public class BookActivity extends BaseActivity {
     }
 
     /**
-     * Processes response from AsyncTask.
+     * Renders book data to view.
      *
      * @param book Book
      */
-    private void processResponse(Book book) {
+    private void renderBookData(Book book) {
         // Add information depending on availability from GoodReads
         addAuthorsText(book);
 
@@ -123,7 +163,7 @@ public class BookActivity extends BaseActivity {
     /**
      * Checks if book contains edition details.
      *
-     * @param book
+     * @param book Book
      * @return boolean
      */
     private boolean containsEditionDetails(Book book) {
@@ -138,7 +178,7 @@ public class BookActivity extends BaseActivity {
     /**
      * Sets authors.
      *
-     * @param book
+     * @param book Book
      */
     private void addAuthorsText(Book book) {
         TextView authors = (TextView) findViewById(R.id.textViewBookAuthors);
@@ -170,7 +210,7 @@ public class BookActivity extends BaseActivity {
     /**
      * Add publication date of this edition,
      *
-     * @param book
+     * @param book Book
      */
     private void addPublicationText(Book book) {
         LocalDate publication = book.getPublication();
@@ -189,7 +229,7 @@ public class BookActivity extends BaseActivity {
     /**
      * Sets description.
      *
-     * @param book
+     * @param book Book
      */
     private void addDescriptionText(Book book) {
         String descriptionHtml = book.getDescription();
@@ -204,9 +244,9 @@ public class BookActivity extends BaseActivity {
     /**
      * Adds text to TextView if text is available and makes TextView visible.
      *
-     * @param title
-     * @param content
-     * @param view
+     * @param title title
+     * @param content content
+     * @param view view
      */
     private void addText(String title, String content, View view) {
         TextView textView = (TextView) view;
@@ -217,9 +257,12 @@ public class BookActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Adds rating.
+     */
     private void addRating() {
         TextView textView = (TextView) findViewById(R.id.textViewBookRatingAmount);
-        String text = "";
+        String text;
 
         if (work.getRatingsCount().length() > 0) {
             RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBarGoodReadsRating);
@@ -235,7 +278,7 @@ public class BookActivity extends BaseActivity {
     /**
      * Creates link to search results on GoodReads.
      *
-     * @param book
+     * @param book Book
      */
     private void addGoodReadsAttribution(Book book) {
         TextView goodReads = (TextView) findViewById(R.id.textViewGoodReadsBookLink);
@@ -249,7 +292,7 @@ public class BookActivity extends BaseActivity {
      * Determines correct suffix for day digit.
      *
      * @param number day
-     * @return String
+     * @return String suffix
      */
     private String getLastDigitSuffix(int number) {
         switch ((number < 20) ? number : number % 10) {
@@ -265,86 +308,12 @@ public class BookActivity extends BaseActivity {
     }
 
     /**
-     * Contacts server for search with AsyncTask.
+     * Displays load error in snackbar.
      */
-    private class Task extends AsyncTask<String, Integer, Book> {
-
-        /**
-         * Contacts server for search.
-         *
-         * @param args
-         * @return Book book
-         */
-        @Override
-        protected Book doInBackground(String... args) {
-            String bookId = args[0];
-            Book book = new Book();
-
-            try {
-                // Create uri with key and query parameters
-                Uri uri = Uri.parse("http://www.goodreads.com/book/show")
-                        .buildUpon()
-                        .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
-                        .appendQueryParameter("id", bookId)
-                        .appendQueryParameter("text_only", "true")
-                        .build();
-
-                // Open connection
-                URL url = new URL(uri.toString());
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
-                // If response ok
-                if (urlConnection.getResponseCode() == 200) {
-
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    Document doc = InputStreamParser.streamToXmlDoc(in);
-
-                    // If document parsed and has tag book
-                    if (doc != null && doc.getElementsByTagName("book") != null) {
-                        book = BookResultParser.docToBook(doc);
-                    } else {
-                        displaySnackBar(getResources().getString(R.string.results_loading_error));
-                    }
-
-                } else {
-                    displaySnackBar(getResources().getString(R.string.http_books_search_error));
-                }
-
-                urlConnection.disconnect();
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-
-
-            }
-
-            // Return empty book
-            return book;
-        }
-
-        /**
-         * Sends response to activity.
-         *
-         * @param book Book
-         */
-        @Override
-        protected void onPostExecute(Book book) {
-            super.onPostExecute(book);
-            processResponse(book);
-        }
-
-        /**
-         * Displays SnackBar.
-         *
-         * @param message String
-         */
-        private void displaySnackBar(String message) {
-            runOnUiThread(() -> {
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                        message, Snackbar.LENGTH_LONG);
-                snackbar.show();
-            });
-        }
+    private void displaySnackbar() {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                    getResources().getText(R.string.snackbar_load_error), Snackbar.LENGTH_LONG);
+            snackbar.show();
     }
 
 }
