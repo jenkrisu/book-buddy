@@ -98,20 +98,8 @@ public class MainActivity extends AppCompatActivity {
      * @param view View
      */
     public void login(View view) {
-        removeRequestPreferences();
         RequestTokenTask requestTokenTask = new RequestTokenTask();
         requestTokenTask.execute();
-    }
-
-    /**
-     * Removes request token and secret from shared preferences.
-     */
-    private void removeRequestPreferences() {
-        SharedPreferences.Editor editor =
-                getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.remove("requestToken");
-        editor.remove("requestTokenSecret");
-        editor.apply();
     }
 
     /**
@@ -169,7 +157,8 @@ public class MainActivity extends AppCompatActivity {
                     // Fetches request token and request token secret from shared preferences
                     getRequestPreferences();
 
-                    if (this.requestToken != null) {
+                    if (this.requestToken != null
+                            && this.requestToken.getToken().equals(requestToken)) {
                         // Gets access token
                         AccessTokenTask accessTokenTask = new AccessTokenTask();
                         accessTokenTask.execute(this.requestToken);
@@ -219,10 +208,8 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 token = service.getRequestToken();
-
-
             } catch (Exception ex) {
-                displaySnackBar(getResources().getString(R.string.snackbar_login_error));
+                displaySnackbar(getResources().getString(R.string.snackbar_login_error));
                 ex.printStackTrace();
             }
 
@@ -285,6 +272,10 @@ public class MainActivity extends AppCompatActivity {
             OAuth1AccessToken token = null;
             OAuth1RequestToken requestToken = args[0];
 
+            if (requestToken == null) {
+                return null;
+            }
+
             OAuth10aService service = new ServiceBuilder()
                     .apiKey(BuildConfig.GOOD_READS_API_KEY)
                     .apiSecret(BuildConfig.GOOD_READS_API_SECRET)
@@ -293,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 token = service.getAccessToken(requestToken, "1");
             } catch (Exception ex) {
-                displaySnackBar(getResources().getString(R.string.snackbar_login_error));
+                displaySnackbar(getResources().getString(R.string.snackbar_login_error));
                 ex.printStackTrace();
             }
 
@@ -390,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             } catch (Exception ex) {
-                displaySnackBar(getResources().getString(R.string.snackbar_login_error));
+                displaySnackbar(getResources().getString(R.string.snackbar_login_error));
                 ex.printStackTrace();
             }
 
@@ -414,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param message String
      */
-    private void displaySnackBar(String message) {
+    private void displaySnackbar(String message) {
         runOnUiThread(() -> {
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                     message, Snackbar.LENGTH_LONG);
