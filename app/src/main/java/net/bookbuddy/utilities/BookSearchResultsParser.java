@@ -1,5 +1,8 @@
 package net.bookbuddy.utilities;
 
+import net.bookbuddy.data.BestBook;
+import net.bookbuddy.data.Work;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

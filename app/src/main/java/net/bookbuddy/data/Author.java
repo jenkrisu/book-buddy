@@ -1,4 +1,4 @@
-package net.bookbuddy.utilities;
+package net.bookbuddy.data;
 
 import java.io.Serializable;
 

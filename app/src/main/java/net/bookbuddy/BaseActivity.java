@@ -35,7 +35,7 @@ public class BaseActivity extends AppCompatActivity
 
         // Set login or logout button
         Menu menu = navigationView.getMenu();
-        if (showLogin()) {
+        if (hasLoggedIn()) {
             menu.findItem(R.id.nav_logout).setVisible(true);
         } else {
             menu.findItem(R.id.nav_login).setVisible(true);
@@ -102,13 +102,18 @@ public class BaseActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.nav_search_books:
                 startActivity(new Intent(this, SearchActivity.class));
+                break;
             case R.id.nav_bookshelves:
+                checkLoginStatus();
                 break;
             case R.id.nav_to_read:
+                checkLoginStatus();
                 break;
             case R.id.nav_reading:
+                checkLoginStatus();
                 break;
             case R.id.nav_read:
+                checkLoginStatus();
                 break;
             case R.id.nav_login:
                 startActivity(new Intent(this, MainActivity.class));
@@ -153,11 +158,20 @@ public class BaseActivity extends AppCompatActivity
     }
 
     /**
+     * Starts Main Activity if user has not logged in.
+     */
+    private void checkLoginStatus() {
+        if (!hasLoggedIn()) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
+    /**
      * Checks whether shared preferences contain access tokens.
      *
      * @return boolean access token found or not
      */
-    private boolean showLogin() {
+    private boolean hasLoggedIn() {
         SharedPreferences preferences =
                 getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
 

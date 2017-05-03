@@ -19,6 +19,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import net.bookbuddy.adapters.BookSearchAdapter;
+import net.bookbuddy.data.Work;
 import net.bookbuddy.utilities.*;
 
 import org.w3c.dom.Document;

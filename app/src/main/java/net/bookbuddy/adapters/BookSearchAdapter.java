@@ -1,4 +1,4 @@
-package net.bookbuddy.utilities;
+package net.bookbuddy.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import net.bookbuddy.R;
+import net.bookbuddy.data.Work;
 
 import java.util.List;
 

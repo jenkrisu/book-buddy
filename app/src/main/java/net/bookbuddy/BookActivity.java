@@ -14,11 +14,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import net.bookbuddy.data.Author;
+import net.bookbuddy.data.Book;
+import net.bookbuddy.data.Work;
 import net.bookbuddy.utilities.*;
 
 import org.joda.time.LocalDate;
 import org.w3c.dom.Document;
-import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;

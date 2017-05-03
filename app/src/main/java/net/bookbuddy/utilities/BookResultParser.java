@@ -1,5 +1,8 @@
 package net.bookbuddy.utilities;
 
+import net.bookbuddy.data.Author;
+import net.bookbuddy.data.Book;
+
 import org.joda.time.LocalDate;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
