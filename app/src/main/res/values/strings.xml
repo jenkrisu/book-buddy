@@ -35,7 +35,6 @@
     <string name="content_description_book">Image of book</string>
     <string name="book_description_title">Book Description</string>
     <string name="book_edition_details_title">Edition Details</string>
-    <string name="book_rating_title">Readers\' Rating</string>
     <string-array name="shelves_array">
         <item>No Shelf</item>
         <item>Want to Read</item>

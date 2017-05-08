@@ -73,6 +73,25 @@
                     android:gravity="center"
                     android:visibility="gone" />
 
+                <!-- Goodreads Rating -->
+                <RatingBar
+                    android:id="@+id/ratingBarGoodreadsRating"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.5" />
+
+                <TextView
+                    android:id="@+id/textViewBookRatingAmount"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
                 <!-- Shelves -->
                 <Spinner
                     android:id="@+id/spinner_shelves"
@@ -110,40 +129,13 @@
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
-                <!-- Goodreads Rating -->
-                <TextView
-                    android:id="@+id/textViewBookRatingTitle"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/book_rating_title"
-                    android:textColor="@android:color/primary_text_light" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarGoodreadsRating"
-                    style="?android:attr/ratingBarStyleIndicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:stepSize="0.5" />
-
-                <TextView
-                    android:id="@+id/textViewBookRatingAmount"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/primary_text_light" />
-
                 <!-- Book edition details -->
                 <TextView
                     android:id="@+id/textViewBookEditionDetails"
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="16dp"
                     android:text="@string/book_edition_details_title"
                     android:textColor="@android:color/primary_text_light"
@@ -154,6 +146,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -162,6 +155,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -170,6 +164,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -178,6 +173,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -186,6 +182,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
 
@@ -194,9 +191,9 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/primary_text_light"
                     android:visibility="gone" />
-
             </LinearLayout>
 
             <!-- Goodreads attribution -->
