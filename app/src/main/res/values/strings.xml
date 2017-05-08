@@ -37,6 +37,7 @@
     <string name="book_edition_details_title">Edition Details</string>
     <string name="book_rating_title">Readers\' Rating</string>
     <string-array name="shelves_array">
+        <item>No Shelf</item>
         <item>Want to Read</item>
         <item>Currently Reading</item>
         <item>Read</item>

@@ -7,6 +7,8 @@ import net.bookbuddy.data.Work;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
@@ -55,6 +57,32 @@ public class BookShelfParser {
                 }
             }
         }
+        return shelves;
+    }
+
+    /**
+     * Adds shelves of book to list.
+     *
+     * @param doc Document to parse
+     * @return List with shelves
+     */
+    public static List<Shelf> docToShelvesOfBook(Document doc) {
+        List<Shelf> shelves = new ArrayList<Shelf>();
+        NodeList shelvesNodeList = doc.getElementsByTagName("shelf");
+
+        if (shelvesNodeList != null) {
+
+            for (int i = 0; i < shelvesNodeList.getLength(); i++) {
+
+                NamedNodeMap map = shelvesNodeList.item(i).getAttributes();
+                Node nameNode = map.getNamedItem("name");
+                String name = nameNode.getNodeValue();
+                Node exclusiveNode = map.getNamedItem("exclusive");
+                boolean exclusive = Boolean.getBoolean(exclusiveNode.getNodeValue());
+                shelves.add(new Shelf(name, exclusive));
+            }
+        }
+
         return shelves;
     }
 

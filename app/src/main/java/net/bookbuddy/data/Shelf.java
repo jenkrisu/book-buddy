@@ -22,6 +22,11 @@ public class Shelf {
     private String bookAmount;
 
     /**
+     * Whether self is exclusive.
+     */
+    private boolean isExclusive;
+
+    /**
      * Creates shelf.
      *
      * @param name String name
@@ -31,6 +36,17 @@ public class Shelf {
         this.name = name;
         this.id = id;
         this.bookAmount = bookAmount;
+    }
+
+    /**
+     * Creates shelf.
+     *
+     * @param name        String name
+     * @param isExclusive Boolean exclusivity
+     */
+    public Shelf(String name, boolean isExclusive) {
+        this.name = name;
+        this.isExclusive = isExclusive;
     }
 
     /**
@@ -85,5 +101,14 @@ public class Shelf {
      */
     public void setBookAmount(String bookAmount) {
         this.bookAmount = bookAmount;
+    }
+
+    /**
+     * Gets exclusivity.
+     *
+     * @return boolean
+     */
+    public boolean isExclusive() {
+        return isExclusive;
     }
 }

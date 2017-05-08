@@ -1,6 +1,7 @@
 package net.bookbuddy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,35 +9,74 @@ import android.support.design.widget.Snackbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuth10aService;
 import com.squareup.picasso.Picasso;
 
 import net.bookbuddy.data.Author;
 import net.bookbuddy.data.Book;
+import net.bookbuddy.data.Shelf;
 import net.bookbuddy.data.Work;
 import net.bookbuddy.utilities.*;
+
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import org.joda.time.LocalDate;
 import org.w3c.dom.Document;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class BookActivity extends BaseActivity implements DownloadCallback {
+public class BookActivity extends BaseActivity implements DownloadCallback, OnItemSelectedListener {
 
     /**
      * Work to display.
      */
     private Work work;
+
+    /**
+     * Access token for OAuth.
+     */
+    private OAuth1AccessToken accessToken;
+
+    /**
+     * User id for get requests.
+     */
+    private String userId;
+
+    /**
+     * Book shelf spinner.
+     */
+    private Spinner spinner;
+
+    /**
+     * Checks if user has selected item on spinner.
+     */
+    private int initCheck;
+
+    /**
+     * Keeps track of previous spinner position.
+     */
+    private int previousSpinnerPos;
+
+    /**
+     * Keeps track of current spinner position.
+     */
+    private int currentSpinnerPos;
 
     /**
      * Creates activity.
@@ -57,8 +97,107 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
             work = (Work) intent.getSerializableExtra("work");
             addInitialData();
             addSpinner();
+            fetchShelves();
             fetchBook();
         }
+    }
+
+    /**
+     * Sets shelf selection to No Self.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initCheck = 0;
+        if (!isLoggedIn()) {
+            spinner.setSelection(0);
+        }
+    }
+
+    /**
+     * Fetches shelves if user is logged in.
+     */
+    private void fetchShelves() {
+        if (isLoggedIn()) {
+
+            if (containsIdAndToken()) {
+                BookShelvesTask task = new BookShelvesTask();
+                task.execute();
+            }
+        }
+    }
+
+    /**
+     * Handles book shelf spinnet item selections.
+     *
+     * @param parent
+     * @param view
+     * @param pos
+     * @param id
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+
+        previousSpinnerPos = currentSpinnerPos;
+        currentSpinnerPos = pos;
+
+        if (initCheck > 0) {
+
+            if (isLoggedIn()) {
+
+                findViewById(R.id.spinner_shelves).setVisibility(View.GONE);
+                findViewById(R.id.progressBar_spinnerLoad).setVisibility(View.VISIBLE);
+
+            } else {
+                startActivity(new Intent(this, MainActivity.class));
+            }
+        }
+
+        initCheck++;
+    }
+
+    /**
+     * Handles nothing selected from spinner.
+     *
+     * @param parent AdapterView
+     */
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Do nothing.
+    }
+
+    /**
+     * Checks if user id, access token and access token secret in shared preferences.
+     *
+     * @return boolean found or not
+     */
+    private boolean containsIdAndToken() {
+        SharedPreferences preferences =
+                getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
+
+        if (preferences.contains("userId")) {
+            this.userId = preferences.getString("userId", "");
+        }
+
+        if (preferences.contains("accessToken") && preferences.contains("accessTokenSecret")) {
+            accessToken = new OAuth1AccessToken(preferences.getString("accessToken", ""),
+                    preferences.getString("accessTokenSecret", ""));
+        }
+
+        return (this.userId != null && this.accessToken != null);
+    }
+
+    /**
+     * Checks if user has logged in.
+     *
+     * @return boolean logged in or not
+     */
+    private boolean isLoggedIn() {
+        SharedPreferences preferences =
+                getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
+
+        return preferences.contains("loggedIn") && preferences.getBoolean("loggedIn", false);
     }
 
     /**
@@ -101,12 +240,15 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
         }
     }
 
+    /**
+     * Adds spinner while loading.
+     */
     private void addSpinner() {
-        Spinner spinner = (Spinner) findViewById(R.id.spinner_shelves);
+        spinner = (Spinner) findViewById(R.id.spinner_shelves);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.shelves_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.shelves_array, R.layout.spinner_item);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     /**
@@ -255,9 +397,9 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
     /**
      * Adds text to TextView if text is available and makes TextView visible.
      *
-     * @param title title
+     * @param title   title
      * @param content content
-     * @param view view
+     * @param view    view
      */
     private void addText(String title, String content, View view) {
         TextView textView = (TextView) view;
@@ -322,9 +464,93 @@ public class BookActivity extends BaseActivity implements DownloadCallback {
      * Displays load error in snackbar.
      */
     private void displaySnackbar() {
-            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                    getResources().getText(R.string.snackbar_load_error), Snackbar.LENGTH_LONG);
-            snackbar.show();
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                getResources().getText(R.string.snackbar_load_error), Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
+    /**
+     * Handles BookShelvesTask result.
+     *
+     * @param list shelves of book
+     */
+    private void processBookShelvesTask(List<Shelf> list) {
+        // Set spinner selection to Want to Read, Currently Reading or Read
+        // if book is found on one of those exclusive shelves
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getName().equals("to-read")) {
+                spinner.setSelection(1);
+            } else if (list.get(i).getName().equals("currently-reading")) {
+                spinner.setSelection(2);
+            } else if (list.get(i).getName().equals("read")) {
+                spinner.setSelection(3);
+            }
+        }
+    }
+
+    /**
+     * Contacts server for user id with AsyncTask.
+     */
+    private class BookShelvesTask extends AsyncTask<Void, Integer, List<Shelf>> {
+
+        /**
+         * Gets user id and possibly user name (optional) from GoodReads.
+         *
+         * @param args array OAuth1AccessToken
+         * @return List<String> values user id and name
+         */
+        @Override
+        protected List<Shelf> doInBackground(Void... args) {
+            List<Shelf> list = new ArrayList<Shelf>();
+
+            OAuth10aService service = new ServiceBuilder()
+                    .apiKey(BuildConfig.GOOD_READS_API_KEY)
+                    .apiSecret(BuildConfig.GOOD_READS_API_SECRET)
+                    .build(GoodreadsApi.instance());
+
+            try {
+                Uri uri = Uri.parse("https://www.goodreads.com/review/list/" + userId + ".xml")
+                        .buildUpon()
+                        .appendQueryParameter("v", "2")
+                        .appendQueryParameter("id", userId)
+                        .appendQueryParameter("search[query]", work.getBestBook().getTitle())
+                        .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
+                        .build();
+
+                OAuthRequest request = new OAuthRequest(Verb.GET,
+                        uri.toString(),
+                        service);
+
+                service.signRequest(accessToken, request);
+
+                Response response = request.send();
+
+                Document doc = null;
+
+                if (response.getBody().contains("GoodreadsResponse")) {
+                    doc = InputStreamParser.stringToDoc(response.getBody());
+                }
+
+                if (doc != null) {
+                    list = BookShelfParser.docToShelvesOfBook(doc);
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return list;
+        }
+
+        /**
+         * Processes result.
+         *
+         * @param list List<Shelf>
+         */
+        @Override
+        protected void onPostExecute(List<Shelf> list) {
+            super.onPostExecute(list);
+            processBookShelvesTask(list);
+        }
+    }
 }

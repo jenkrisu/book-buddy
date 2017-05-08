@@ -2,12 +2,14 @@ package net.bookbuddy.utilities;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -41,6 +43,30 @@ public class InputStreamParser {
         }
 
         return document;
+    }
+
+    /**
+     * Converts string to document.
+     *
+     * @param string string to convert
+     * @return Document document
+     */
+    public static Document stringToDoc(String string) {
+        Document doc = null;
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory
+                .newInstance();
+        factory.setNamespaceAware(true);
+
+        try {
+            doc = factory
+                    .newDocumentBuilder()
+                    .parse(new InputSource(new StringReader(string)));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return doc;
     }
 
 }

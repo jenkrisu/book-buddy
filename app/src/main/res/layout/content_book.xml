@@ -78,8 +78,16 @@
                     android:id="@+id/spinner_shelves"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+                <!-- Progress bar for when loading shelf changes based on spinner selection -->
+                <ProgressBar
+                    android:id="@+id/progressBar_spinnerLoad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
 
                 <!-- Book description -->
                 <TextView
