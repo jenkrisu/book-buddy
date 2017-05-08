@@ -35,12 +35,9 @@
     <string name="content_description_book">Image of book</string>
     <string name="book_description_title">Book Description</string>
     <string name="book_edition_details_title">Edition Details</string>
-    <string-array name="shelves_array">
-        <item>No Shelf</item>
-        <item>Want to Read</item>
-        <item>Currently Reading</item>
-        <item>Read</item>
-    </string-array>
+    <string name="snackbar_added">Book added to shelf.</string>
+    <string name="snackbar_removed">Book removed from shelf.</string>
+    <string name="snackbar_error">Unfortunately an error.</string>
 
     <!-- Error messages for SnackBars -->
     <string name="results_loading_error">Unfortunately an error occurred loading results.</string>

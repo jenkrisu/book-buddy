@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -64,21 +65,6 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
     private Spinner spinner;
 
     /**
-     * Checks if user has selected item on spinner.
-     */
-    private int initCheck;
-
-    /**
-     * Keeps track of previous spinner position.
-     */
-    private int previousSpinnerPos;
-
-    /**
-     * Keeps track of current spinner position.
-     */
-    private int currentSpinnerPos;
-
-    /**
      * Creates activity.
      *
      * @param savedInstanceState Bundle
@@ -103,12 +89,11 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
     }
 
     /**
-     * Sets shelf selection to No Self.
+     * Makes sure that shelf is "Add to Self" if not logged in.
      */
     @Override
     protected void onResume() {
         super.onResume();
-        initCheck = 0;
         if (!isLoggedIn()) {
             spinner.setSelection(0);
         }
@@ -139,22 +124,38 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
 
-        previousSpinnerPos = currentSpinnerPos;
-        currentSpinnerPos = pos;
-
-        if (initCheck > 0) {
-
+        if (pos != 0) {
             if (isLoggedIn()) {
-
                 findViewById(R.id.spinner_shelves).setVisibility(View.GONE);
                 findViewById(R.id.progressBar_spinnerLoad).setVisibility(View.VISIBLE);
 
+                // Self selected, add book to that self
+                AddOrRemoveTask addOrRemoveTask = new AddOrRemoveTask();
+                addOrRemoveTask.execute(getShelfName(pos), work.getBestBook().getId(), "");
             } else {
                 startActivity(new Intent(this, MainActivity.class));
             }
         }
+    }
 
-        initCheck++;
+    /**
+     * Finds name of shelf.
+     *
+     * @param pos position of spinner item
+     * @return String name
+     */
+
+    private String getShelfName(int pos) {
+        switch (pos) {
+            case 1:
+                return "to-read";
+            case 2:
+                return "currently-reading";
+            case 3:
+                return "read";
+            default:
+                return "";
+        }
     }
 
     /**
@@ -172,6 +173,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
      *
      * @return boolean found or not
      */
+
     private boolean containsIdAndToken() {
         SharedPreferences preferences =
                 getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
@@ -222,6 +224,11 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
         }
     }
 
+    /**
+     * Handles result of fetching the best book data.
+     *
+     * @param result DownloadTask.Result with document and status
+     */
     @Override
     public void processFinish(DownloadXmlTask.Result result) {
         Book book;
@@ -244,9 +251,32 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
      * Adds spinner while loading.
      */
     private void addSpinner() {
+        String[] array = new String[]{"Add to Shelf", "Want to Read", "Currently Reading", "Read"};
+
         spinner = (Spinner) findViewById(R.id.spinner_shelves);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.shelves_array, R.layout.spinner_item);
+
+        ArrayAdapter adapter =
+                new ArrayAdapter<String>(this, R.layout.spinner_item, array) {
+                    // Show Add to Shelf selection only if book is on no shelf
+                    @Override
+                    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                        View v = null;
+
+                        // If this is the initial dummy entry, make it hidden
+                        if (position == 0) {
+                            TextView tv = new TextView(getContext());
+                            tv.setHeight(0);
+                            tv.setVisibility(View.GONE);
+                            v = tv;
+                        } else {
+                            // Pass convertView as null to prevent reuse of special case views
+                            v = super.getDropDownView(position, null, parent);
+                        }
+
+                        return v;
+                    }
+                };
+
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
     }
@@ -478,6 +508,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
         // Set spinner selection to Want to Read, Currently Reading or Read
         // if book is found on one of those exclusive shelves
         for (int i = 0; i < list.size(); i++) {
+            System.out.println("NAME: " + list.get(i).getName());
             if (list.get(i).getName().equals("to-read")) {
                 spinner.setSelection(1);
             } else if (list.get(i).getName().equals("currently-reading")) {
@@ -489,7 +520,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
     }
 
     /**
-     * Contacts server for user id with AsyncTask.
+     * Finds possible book shelves that the selected book is on.
      */
     private class BookShelvesTask extends AsyncTask<Void, Integer, List<Shelf>> {
 
@@ -551,6 +582,102 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
         protected void onPostExecute(List<Shelf> list) {
             super.onPostExecute(list);
             processBookShelvesTask(list);
+        }
+    }
+
+    /**
+     * Handles shelf update.
+     *
+     * @param status Integer status
+     */
+    private void processShelfUpdate(int status) {
+        findViewById(R.id.progressBar_spinnerLoad).setVisibility(View.GONE);
+        findViewById(R.id.spinner_shelves).setVisibility(View.VISIBLE);
+        Snackbar snackbar;
+
+        switch (status) {
+            case 200:
+                snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        getResources().getText(R.string.snackbar_removed), Snackbar.LENGTH_LONG);
+                snackbar.show();
+                break;
+            case 201:
+                snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        getResources().getText(R.string.snackbar_added), Snackbar.LENGTH_LONG);
+                snackbar.show();
+                break;
+            default:
+                snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        getResources().getText(R.string.snackbar_error), Snackbar.LENGTH_LONG);
+                snackbar.show();
+                break;
+        }
+    }
+
+    /**
+     * Adds or removes book from shelf.
+     */
+    private class AddOrRemoveTask extends AsyncTask<String, Integer, Integer> {
+
+        /**
+         * Adds book to shelf.
+         * <p>
+         * In case of exclusive shelves (to-read, currently-reading, read) book can only be
+         * transferred from shelf to another with the Goodreads API, not removed completely
+         * after it has been initially added. If book on exclusive shelf is "removed",
+         * it is actually moved to shelf read.
+         * <p>
+         * In case of non-exlusive shelves the book can be removed from shelf.
+         *
+         * @param args name of shelf, id of book, add ("") or remove ("remove")
+         * @return Integer status
+         */
+        @Override
+        protected Integer doInBackground(String... args) {
+            String name = args[0];
+            String bookId = args[1];
+            String addOrRemove = args[2];
+            String url = "https://www.goodreads.com/shelf/add_to_shelf.xml";
+            int status = 0;
+
+            OAuth10aService service = new ServiceBuilder()
+                    .apiKey(BuildConfig.GOOD_READS_API_KEY)
+                    .apiSecret(BuildConfig.GOOD_READS_API_SECRET)
+                    .build(GoodreadsApi.instance());
+
+            try {
+                OAuthRequest request = new OAuthRequest(Verb.POST,
+                        url,
+                        service);
+
+                request.addBodyParameter("name", name);
+                request.addBodyParameter("book_id", bookId);
+                request.addBodyParameter("a", addOrRemove);
+
+                service.signRequest(accessToken, request);
+
+                Response response = request.send();
+                System.out.println("RESPONSE");
+                System.out.println(response.getBody());
+                System.out.println(response.getCode());
+                status = response.getCode();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return status;
+        }
+
+        /**
+         * Handles shelf update.
+         *
+         * @param status
+         */
+        @Override
+        protected void onPostExecute(Integer status) {
+            super.onPostExecute(status);
+            processShelfUpdate(status);
         }
     }
 }
