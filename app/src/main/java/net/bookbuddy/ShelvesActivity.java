@@ -1,12 +1,17 @@
 package net.bookbuddy;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import net.bookbuddy.adapters.BookShelfAdapter;
 import net.bookbuddy.data.Shelf;
@@ -21,6 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShelvesActivity extends BaseActivity implements DownloadCallback {
+
+    /**
+     * Saves userId.
+     */
+    private String userId;
 
     /**
      * Creates activity.
@@ -40,9 +50,7 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
                 getApplicationContext().getSharedPreferences(Global.MY_PREFS_NAME, MODE_PRIVATE);
 
         if (preferences.contains("userId")) {
-
-            String userId = preferences.getString("userId", "");
-            System.out.println("userId: " + userId);
+            userId = preferences.getString("userId", "");
 
             Uri uri = Uri.parse("https://www.goodreads.com/shelf/list")
                     .buildUpon()
@@ -82,11 +90,42 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
     private void createListView(List<Shelf> shelves) {
         ListView listView = (ListView) findViewById(R.id.listViewShelves);
 
+        addHeader(listView, shelves.size());
+        addFooter(listView);
+
         ListAdapter customAdapter = new BookShelfAdapter(shelves, this);
         listView.setAdapter(customAdapter);
 
         findViewById(R.id.progressBarShelves).setVisibility(View.GONE);
         findViewById(R.id.listViewShelves).setVisibility(View.VISIBLE);
+    }
+
+    private void addHeader(ListView listView, int shelves) {
+        // Add non selectable header to ListView
+
+        View header = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.list_item_shelf_header, null, false);
+
+        listView.addHeaderView(header, "Header", false);
+
+        // Set shelf amount
+        TextView textView = (TextView) findViewById(R.id.textViewShelvesAmount);
+        textView.setText("Total " + shelves + " shelves.");
+    }
+
+    private void addFooter(ListView listView) {
+        View footer = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.list_item_shelf_footer, null, false);
+
+        listView.addFooterView(footer, "Footer", false);
+
+        // Set attribution link
+        TextView goodreads = (TextView) findViewById(R.id.textViewGoodreadsDataShelves);
+        String url = "https://www.goodreads.com/user/show/" + userId;
+        String attribution = "Shelves on <a href='" + url + "'>Goodreads</a>";
+        goodreads.setClickable(true);
+        goodreads.setMovementMethod(LinkMovementMethod.getInstance());
+        goodreads.setText(Html.fromHtml(attribution));
     }
 
     /**
