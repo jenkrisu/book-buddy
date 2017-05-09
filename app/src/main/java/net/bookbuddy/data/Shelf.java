@@ -1,10 +1,12 @@
 package net.bookbuddy.data;
 
+import java.io.Serializable;
+
 /**
  * Created by Jenni on 3.5.2017.
  */
 
-public class Shelf {
+public class Shelf implements Serializable {
 
     /**
      * Name of shelf.

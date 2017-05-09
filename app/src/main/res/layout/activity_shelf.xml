@@ -9,7 +9,7 @@
 
     <!-- Content -->
     <include
-        layout="@layout/content_shelf_exclusive"
+        layout="@layout/content_shelf"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -60,7 +60,23 @@ public class BookShelfAdapter extends ArrayAdapter<Shelf> {
         }
 
         Shelf shelf = getItem(position);
-        holder.name.setText(shelf.getName());
+        String name = shelf.getName();
+
+        switch(name) {
+            case "to-read":
+                name = "To Read";
+                break;
+            case "currently-reading":
+                name = "Currently Reading";
+                break;
+            case "read":
+                name = "Read";
+                break;
+            default:
+                break;
+        }
+
+        holder.name.setText(name);
         String amountText = "Contains " + shelf.getBookAmount() + " books";
         holder.bookAmount.setText(amountText);
 

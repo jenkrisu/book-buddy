@@ -113,12 +113,12 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
     }
 
     /**
-     * Handles book shelf spinnet item selections.
+     * Handles book shelf spinner item selections.
      *
-     * @param parent
-     * @param view
-     * @param pos
-     * @param id
+     * @param parent AdapterView
+     * @param view   View
+     * @param pos    Integer position
+     * @param id     long Id
      */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
@@ -278,6 +278,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
                 };
 
         spinner.setAdapter(adapter);
+
         spinner.setOnItemSelectedListener(this);
     }
 
@@ -527,8 +528,8 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
         /**
          * Gets user id and possibly user name (optional) from GoodReads.
          *
-         * @param args array OAuth1AccessToken
-         * @return List<String> values user id and name
+         * @param args array (empty)
+         * @return List<Shelf> shelves
          */
         @Override
         protected List<Shelf> doInBackground(Void... args) {

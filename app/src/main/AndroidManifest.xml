@@ -24,10 +24,12 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <data android:scheme="book.buddy" />
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -56,6 +58,10 @@
         <activity
             android:name=".ShelvesActivity"
             android:label="@string/nav_all_shelves"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- Shelf (General) Activity -->
+        <activity
+            android:name=".ShelfActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

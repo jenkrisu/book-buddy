@@ -5,12 +5,12 @@
     android:id="@+id/layout_contentShelves"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.bookbuddy.ShelfExclusiveActivity">
+    tools:context="net.bookbuddy.ShelfActivity">
 
     <include layout="@layout/nav_app_bar" />
 
     <ProgressBar
-        android:id="@+id/progressBar_shelfExclusive"
+        android:id="@+id/progressBar_shelf"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,14 +19,14 @@
 
     <!-- Search results -->
     <LinearLayout
-        android:id="@+id/linearLayout_shelfExclusive"
+        android:id="@+id/linearLayout_shelf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ListView
-            android:id="@+id/listView_shelfExclusive"
+            android:id="@+id/listView_shelf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

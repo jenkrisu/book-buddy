@@ -1,6 +1,7 @@
 package net.bookbuddy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -69,6 +71,11 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
         }
     }
 
+    /**
+     * Handles result of fetching shelves.
+     *
+     * @param result DownloadTask.Result with document and status
+     */
     @Override
     public void processFinish(DownloadXmlTask.Result result) {
         List<Shelf> shelves = new ArrayList<Shelf>();
@@ -96,10 +103,30 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
         ListAdapter customAdapter = new BookShelfAdapter(shelves, this);
         listView.setAdapter(customAdapter);
 
+        // Add listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Obs! Header is at position 0 and footer at last position.
+                int index = position - 1;
+                if (index > -1 && index < shelves.size()) {
+                    Intent intent =
+                            new Intent(getApplicationContext(), ShelfActivity.class);
+                    intent.putExtra("shelf", shelves.get(index));
+                    startActivity(intent);
+                }
+            }
+        });
+
         findViewById(R.id.progressBarShelves).setVisibility(View.GONE);
         findViewById(R.id.listViewShelves).setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Creates header.
+     *
+     * @param listView ListView
+     * @param shelves  Integer amount of shelves
+     */
     private void addHeader(ListView listView, int shelves) {
         // Add non selectable header to ListView
 
@@ -110,9 +137,14 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
 
         // Set shelf amount
         TextView textView = (TextView) findViewById(R.id.textViewShelvesAmount);
-        textView.setText("Total " + shelves + " shelves.");
+        textView.setText("In total " + shelves + " shelves.");
     }
 
+    /**
+     * Creates footer.
+     *
+     * @param listView ListView
+     */
     private void addFooter(ListView listView) {
         View footer = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.list_item_shelf_footer, null, false);

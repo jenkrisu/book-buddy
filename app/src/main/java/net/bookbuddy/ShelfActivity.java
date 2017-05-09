@@ -16,7 +16,6 @@ import com.github.scribejava.core.oauth.OAuth10aService;
 
 import net.bookbuddy.data.Book;
 import net.bookbuddy.data.Shelf;
-import net.bookbuddy.utilities.BookShelfParser;
 import net.bookbuddy.utilities.Global;
 import net.bookbuddy.utilities.GoodreadsApi;
 import net.bookbuddy.utilities.InputStreamParser;
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * Displays items on shelf.
  */
-public class ShelfExclusiveActivity extends BaseActivity {
+public class ShelfActivity extends BaseActivity {
 
     /**
      * Saves userId.
@@ -59,11 +58,11 @@ public class ShelfExclusiveActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shelf_exclusive);
+        setContentView(R.layout.activity_shelf);
 
         // Add navigation drawer
         super.onCreateDrawer();
-        findViewById(R.id.progressBar_shelfExclusive).setVisibility(View.VISIBLE);
+        findViewById(R.id.progressBar_shelf).setVisibility(View.VISIBLE);
 
         Intent intent = getIntent();
         if (intent.hasExtra("shelf")) {
