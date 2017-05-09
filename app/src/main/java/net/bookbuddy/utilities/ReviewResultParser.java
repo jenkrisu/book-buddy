@@ -2,6 +2,7 @@ package net.bookbuddy.utilities;
 
 import net.bookbuddy.data.Book;
 import net.bookbuddy.data.Review;
+import net.bookbuddy.data.Shelf;
 
 import org.joda.time.LocalDate;
 import org.w3c.dom.Document;
@@ -17,6 +18,12 @@ import java.util.List;
 
 public class ReviewResultParser {
 
+    /**
+     * Parses document to list of shelves.
+     *
+     * @param doc Document
+     * @return Review
+     */
     public static List<Review> docToReviews(Document doc) {
         List<Review> list = new ArrayList<Review>();
         NodeList reviewsNodeList = doc.getElementsByTagName("review");
@@ -28,13 +35,14 @@ public class ReviewResultParser {
                 Element e = (Element) reviewsNodeList.item(i);
 
                 String id = BookResultParser.getStringContent(e, "id");
-                Book book = null;
+                Book book = new Book();
                 String rating = BookResultParser.getStringContent(e, "rating");
                 String startedAt = BookResultParser.getStringContent(e, "startedAt");
                 String readAt = BookResultParser.getStringContent(e, "readAt");
                 String dateAdded = BookResultParser.getStringContent(e, "dateAdded");
                 String dateUpdated = BookResultParser.getStringContent(e, "dateUpdated");
                 String body = BookResultParser.getStringContent(e, "body");
+                List<Shelf> shelves = new ArrayList<Shelf>();
 
                 if (e.getElementsByTagName("book") != null
                         && e.getElementsByTagName("book").getLength() > 0) {
@@ -43,8 +51,14 @@ public class ReviewResultParser {
                     book = BookResultParser.elementToBook(b);
                 }
 
+                if (e.getElementsByTagName("shelf") != null
+                        && e.getElementsByTagName("shelf").getLength() > 0) {
+                    NodeList nodeList = e.getElementsByTagName("shelf");
+                    shelves = BookShelfParser.nodeListToShelves(nodeList);
+                }
+
                 list.add(new Review(id, book, rating, startedAt, readAt, dateAdded, dateUpdated,
-                        body));
+                        body, shelves));
             }
         }
 

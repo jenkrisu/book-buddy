@@ -53,8 +53,18 @@ public class BookShelfParser {
      * @return List with shelves
      */
     public static List<Shelf> docToShelvesOfBook(Document doc) {
-        List<Shelf> shelves = new ArrayList<Shelf>();
         NodeList shelvesNodeList = doc.getElementsByTagName("shelf");
+        return nodeListToShelves(shelvesNodeList);
+    }
+
+    /**
+     * Converts NodeList to list of shelves.
+     *
+     * @param shelvesNodeList NodeList
+     * @return List of shelves
+     */
+    public static List<Shelf> nodeListToShelves(NodeList shelvesNodeList) {
+        List<Shelf> shelves = new ArrayList<Shelf>();
 
         if (shelvesNodeList != null) {
 

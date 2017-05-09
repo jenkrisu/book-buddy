@@ -1,5 +1,7 @@
 package net.bookbuddy.data;
 
+import java.util.List;
+
 /**
  * Created by Jenni on 9.5.2017.
  */
@@ -22,11 +24,13 @@ public class Review {
 
     private String body;
 
+    private List<Shelf> shelves;
+
     public Review() {
     }
 
     public Review(String id, Book book, String rating, String startedAt, String readAt,
-                  String dateAdded, String dateUpdated, String body) {
+                  String dateAdded, String dateUpdated, String body, List<Shelf> shelves) {
         this.id = id;
         this.book = book;
         this.rating = rating;
@@ -35,6 +39,7 @@ public class Review {
         this.dateAdded = dateAdded;
         this.dateUpdated = dateUpdated;
         this.body = body;
+        this.shelves = shelves;
     }
 
     public String getId() {
@@ -68,4 +73,6 @@ public class Review {
     public String getBody() {
         return body;
     }
+
+    public List<Shelf> getShelves() { return shelves; }
 }

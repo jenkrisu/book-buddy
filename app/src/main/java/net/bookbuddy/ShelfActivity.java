@@ -160,14 +160,7 @@ public class ShelfActivity extends BaseActivity {
     }
 
     private void processBooksTask(List<Review> reviews) {
-        System.out.println("REVIEWS: " + reviews.size());
-
-        for (Review r : reviews) {
-            System.out.println(r.getBook().getTitle() + ", " + r.getRating());
-        }
-
         expandableListView.setAdapter(new ShelfItemAdapter(this, reviews));
-
         findViewById(R.id.progressBar_shelf).setVisibility(View.GONE);
     }
 
