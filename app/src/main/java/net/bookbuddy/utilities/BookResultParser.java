@@ -34,69 +34,39 @@ public class BookResultParser {
     }
 
     /**
+     * Gets string content from first Node of NodeList.
+     *
+     * @param e       Element
+     * @param tagName String
+     * @return String content
+     */
+    public static String getStringContent(Element e, String tagName) {
+        if (e.getElementsByTagName(tagName) != null
+                && e.getElementsByTagName(tagName).getLength() > 0) {
+            return e.getElementsByTagName(tagName).item(0).getTextContent();
+        } else {
+            return "";
+        }
+    }
+
+    /**
      * Parses Element to Book.
      *
      * @param e Element
      * @return Book book
      */
     public static Book elementToBook(Element e) {
-        String title = "";
-        String url = "";
-        String isbn = "";
-        String isbnThirteen = "";
-        String description = "";
+        String title = getStringContent(e, "title");
+        String url = getStringContent(e, "url");
+        String isbn = getStringContent(e, "isbn");
+        String isbnThirteen = getStringContent(e, "isbn13");
+        String description = getStringContent(e, "description");
         LocalDate publication = getPublicationDate(e);
-        String publisher = "";
-        String format = "";
-        String pages = "";
+        String publisher = getStringContent(e, "publisher");
+        String format = getStringContent(e, "format");
+        String pages = getStringContent(e, "num_pages");
         List<Author> authors = getAuthors(e);
-
-        String widget = "";
-
-        if (e.getElementsByTagName("publisher") != null
-                && e.getElementsByTagName("publisher").getLength() > 0) {
-            publisher = e.getElementsByTagName("publisher").item(0).getTextContent();
-        }
-
-        if (e.getElementsByTagName("title") != null
-                && e.getElementsByTagName("title").getLength() > 0) {
-            title = e.getElementsByTagName("title").item(0).getTextContent();
-        }
-
-        if (e.getElementsByTagName("url") != null
-                && e.getElementsByTagName("url").getLength() > 0) {
-            url = e.getElementsByTagName("url").item(0).getTextContent();
-        }
-
-        if (e.getElementsByTagName("isbn") != null
-                && e.getElementsByTagName("isbn").getLength() > 0) {
-            isbn = e.getElementsByTagName("isbn").item(0).getTextContent();
-        }
-
-        if (e.getElementsByTagName("isbn13") != null
-                && e.getElementsByTagName("isbn13").getLength() > 0) {
-            isbnThirteen = e.getElementsByTagName("isbn13").item(0).getTextContent();
-        }
-
-        if (e.getElementsByTagName("description") != null
-                && e.getElementsByTagName("description").getLength() > 0) {
-            description = e.getElementsByTagName("description").item(0).getTextContent();
-        }
-
-        if (e.getElementsByTagName("format") != null
-                && e.getElementsByTagName("format").getLength() > 0) {
-            format = e.getElementsByTagName("format").item(0).getTextContent();
-        }
-
-        if (e.getElementsByTagName("num_pages") != null
-                && e.getElementsByTagName("num_pages").getLength() > 0) {
-            pages = e.getElementsByTagName("num_pages").item(0).getTextContent();
-        }
-
-        if (e.getElementsByTagName("reviews_widget") != null
-                && e.getElementsByTagName("reviews_widget").getLength() > 0) {
-            widget = e.getElementsByTagName("reviews_widget").item(0).getTextContent();
-        }
+        String widget = getStringContent(e, "reviews_widget");
 
         return new Book(title, url, isbn, isbnThirteen, description, publication, publisher,
                 format, pages, authors, widget);
@@ -158,22 +128,9 @@ public class BookResultParser {
 
             for (int i = 0; i < authorNodeList.getLength(); i++) {
                 Element a = (Element) authorNodeList.item(i);
-                String authorId = "";
-                String authorName = "";
-                String authorRole = "";
-
-                if (a.getElementsByTagName("id") != null) {
-                    authorId = a.getElementsByTagName("id").item(0).getTextContent();
-                }
-
-                if (a.getElementsByTagName("name") != null) {
-                    authorName = a.getElementsByTagName("name").item(0).getTextContent();
-                }
-
-                if (a.getElementsByTagName("role") != null) {
-                    authorRole = a.getElementsByTagName("role").item(0).getTextContent();
-                }
-
+                String authorId = getStringContent(a, "id");
+                String authorName = getStringContent(a, "name");
+                String authorRole = getStringContent(a, "role");
                 authors.add(new Author(authorId, authorName, authorRole));
             }
         }

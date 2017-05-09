@@ -52,6 +52,11 @@ public class ShelfActivity extends BaseActivity {
     private String order = "d";
 
     /**
+     * Amount of books on shelf.
+     */
+    private String amount;
+
+    /**
      * Creates activity.
      *
      * @param savedInstanceState Bundle
@@ -69,6 +74,7 @@ public class ShelfActivity extends BaseActivity {
         if (intent.hasExtra("shelf")) {
             Shelf shelf = (Shelf) intent.getSerializableExtra("shelf");
             String name = shelf.getName();
+            amount = shelf.getBookAmount();
             if (name != null) {
                 // Set title to activity
                 setTitle(getTitle(name));
@@ -152,7 +158,13 @@ public class ShelfActivity extends BaseActivity {
     }
 
     private void processBooksTask(List<Review> reviews) {
+        System.out.println("REVIEWS: " + reviews.size());
 
+        for (Review r : reviews) {
+            System.out.println(r.getBook().getTitle() + ", " + r.getRating());
+        }
+
+        findViewById(R.id.progressBar_shelf).setVisibility(View.GONE);
     }
 
     /**
@@ -197,8 +209,6 @@ public class ShelfActivity extends BaseActivity {
                 service.signRequest(accessToken, request);
 
                 Response response = request.send();
-
-                System.out.println(response.getBody());
 
                 Document doc = null;
 

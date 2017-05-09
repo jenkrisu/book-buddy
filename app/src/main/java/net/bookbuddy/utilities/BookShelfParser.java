@@ -33,26 +33,12 @@ public class BookShelfParser {
         if (shelvesNodeList != null) {
 
             for (int i = 0; i < shelvesNodeList.getLength(); i++) {
-
                 Element e = (Element) shelvesNodeList.item(i);
+                String name = BookResultParser.getStringContent(e, "name");
+                String id = BookResultParser.getStringContent(e, "id");
+                String bookAmount = BookResultParser.getStringContent(e, "book_count");
 
-                String name = null;
-                String id = null;
-                String bookAmount = null;
-
-                if (e.getElementsByTagName("name") != null) {
-                    name = e.getElementsByTagName("name").item(0).getTextContent();
-                }
-
-                if (e.getElementsByTagName("id") != null) {
-                    id = e.getElementsByTagName("id").item(0).getTextContent();
-                }
-
-                if (e.getElementsByTagName("book_count") != null) {
-                    bookAmount = e.getElementsByTagName("book_count").item(0).getTextContent();
-                }
-
-                if (name != null && id != null) {
+                if (name.length() > 0 && id.length() > 0) {
                     shelves.add(new Shelf(name, id, bookAmount));
                 }
             }
