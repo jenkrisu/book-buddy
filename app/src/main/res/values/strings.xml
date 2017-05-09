@@ -40,7 +40,9 @@
     <string name="snackbar_error">Unfortunately an error.</string>
 
     <!-- Shelf Activity -->
-    <string name="review_title">Review:</string>
+    <string name="rating_title">My rating:</string>
+    <string name="review_title">My review:</string>
+    <string name="button_show_book">Show Book</string>
 
     <!-- Error messages for SnackBars -->
     <string name="results_loading_error">Unfortunately an error occurred loading results.</string>

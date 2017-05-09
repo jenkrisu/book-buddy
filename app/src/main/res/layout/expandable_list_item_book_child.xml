@@ -10,6 +10,7 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         android:visibility="gone"/>
 
     <TextView
@@ -40,12 +41,21 @@
         android:layout_height="wrap_content"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/textView_reviewRating"
+        android:text="@string/rating_title"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"/>
+
     <RatingBar
         android:id="@+id/ratingBar_reviewRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:stepSize="1"
         android:numStars="5"
+        android:layout_marginTop="4dp"
         android:visibility="gone"
         style="@style/Widget.AppCompat.RatingBar.Indicator"/>
 
@@ -55,6 +65,7 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:visibility="gone"/>
 
     <TextView
@@ -63,5 +74,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button_showBook"
+        android:text="@string/button_show_book"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_marginTop="12dp"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
