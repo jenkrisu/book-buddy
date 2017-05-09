@@ -14,11 +14,12 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
-import net.bookbuddy.data.Book;
+import net.bookbuddy.data.Review;
 import net.bookbuddy.data.Shelf;
 import net.bookbuddy.utilities.Global;
 import net.bookbuddy.utilities.GoodreadsApi;
 import net.bookbuddy.utilities.InputStreamParser;
+import net.bookbuddy.utilities.ReviewResultParser;
 
 import org.w3c.dom.Document;
 
@@ -104,15 +105,16 @@ public class ShelfActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Fetches books if user is logged in.
+     *
+     * @param name String shelf name
+     */
     private void getBooks(String name) {
-
         if (isLoggedIn() && containsIdAndToken()) {
-
-            BooksTask booksTask = new BooksTask();
-            booksTask.execute(name, "date_added", "d");
-
+            ReviewsTask reviewsTask = new ReviewsTask();
+            reviewsTask.execute(name, "date_added", "d");
         }
-
     }
 
     /**
@@ -149,26 +151,26 @@ public class ShelfActivity extends BaseActivity {
         return (this.userId != null && this.accessToken != null);
     }
 
-    private void processBooksTask(List<Book> books) {
+    private void processBooksTask(List<Review> reviews) {
 
     }
 
     /**
      * Finds possible books on selected shelf.
      */
-    private class BooksTask extends AsyncTask<String, Integer, List<Book>> {
+    private class ReviewsTask extends AsyncTask<String, Integer, List<Review>> {
 
         /**
          * Gets user id and possibly user name (optional) from GoodReads.
          *
          * @param args array with book shelf name
-         * @return List<Book> books
+         * @return List<Review> reviews
          */
         @Override
-        protected List<Book> doInBackground(String... args) {
+        protected List<Review> doInBackground(String... args) {
             String name = args[0];
 
-            List<Book> list = new ArrayList<Book>();
+            List<Review> list = new ArrayList<Review>();
 
             OAuth10aService service = new ServiceBuilder()
                     .apiKey(BuildConfig.GOOD_READS_API_KEY)
@@ -205,7 +207,7 @@ public class ShelfActivity extends BaseActivity {
                 }
 
                 if (doc != null) {
-
+                    list = ReviewResultParser.docToReviews(doc);
                 }
 
             } catch (Exception ex) {
@@ -218,10 +220,10 @@ public class ShelfActivity extends BaseActivity {
         /**
          * Processes result.
          *
-         * @param list List<Book>
+         * @param list List<Review>
          */
         @Override
-        protected void onPostExecute(List<Book> list) {
+        protected void onPostExecute(List<Review> list) {
             super.onPostExecute(list);
             processBooksTask(list);
         }

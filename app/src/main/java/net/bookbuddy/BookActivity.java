@@ -65,6 +65,11 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
     private Spinner spinner;
 
     /**
+     * Prevents firing onItemSelectedListener after selection set programmatically on view create.
+     */
+    private int initCheck;
+
+    /**
      * Creates activity.
      *
      * @param savedInstanceState Bundle
@@ -104,7 +109,6 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
      */
     private void fetchShelves() {
         if (isLoggedIn()) {
-
             if (containsIdAndToken()) {
                 BookShelvesTask task = new BookShelvesTask();
                 task.execute();
@@ -123,19 +127,22 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
+        if (initCheck > 0) {
+            if (pos != 0) {
+                if (isLoggedIn()) {
+                    findViewById(R.id.spinner_shelves).setVisibility(View.GONE);
+                    findViewById(R.id.progressBar_spinnerLoad).setVisibility(View.VISIBLE);
 
-        if (pos != 0) {
-            if (isLoggedIn()) {
-                findViewById(R.id.spinner_shelves).setVisibility(View.GONE);
-                findViewById(R.id.progressBar_spinnerLoad).setVisibility(View.VISIBLE);
-
-                // Self selected, add book to that self
-                AddOrRemoveTask addOrRemoveTask = new AddOrRemoveTask();
-                addOrRemoveTask.execute(getShelfName(pos), work.getBestBook().getId(), "");
-            } else {
-                startActivity(new Intent(this, MainActivity.class));
+                    // Self selected, add book to that self
+                    AddOrRemoveTask addOrRemoveTask = new AddOrRemoveTask();
+                    addOrRemoveTask.execute(getShelfName(pos), work.getBestBook().getId(), "");
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
             }
         }
+        initCheck++;
+
     }
 
     /**
@@ -509,13 +516,15 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
         // Set spinner selection to Want to Read, Currently Reading or Read
         // if book is found on one of those exclusive shelves
         for (int i = 0; i < list.size(); i++) {
-            System.out.println("NAME: " + list.get(i).getName());
             if (list.get(i).getName().equals("to-read")) {
                 spinner.setSelection(1);
+                break;
             } else if (list.get(i).getName().equals("currently-reading")) {
                 spinner.setSelection(2);
+                break;
             } else if (list.get(i).getName().equals("read")) {
                 spinner.setSelection(3);
+                break;
             }
         }
     }
@@ -658,9 +667,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
                 service.signRequest(accessToken, request);
 
                 Response response = request.send();
-                System.out.println("RESPONSE");
-                System.out.println(response.getBody());
-                System.out.println(response.getCode());
+
                 status = response.getCode();
 
             } catch (Exception ex) {

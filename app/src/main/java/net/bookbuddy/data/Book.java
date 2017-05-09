@@ -12,6 +12,11 @@ import java.util.List;
 public class Book implements Serializable {
 
     /**
+     * Title of book.
+     */
+    private String title;
+
+    /**
      * Url of book on GoodReads.
      */
     private String url;
@@ -70,6 +75,7 @@ public class Book implements Serializable {
     /**
      * Constructs book.
      *
+     * @param title             String
      * @param url               String
      * @param isbnTen           String
      * @param isbnThirteen      String
@@ -81,9 +87,10 @@ public class Book implements Serializable {
      * @param authors           String
      * @param reviewsWidgetHtml String
      */
-    public Book(String url, String isbnTen, String isbnThirteen, String description,
+    public Book(String title, String url, String isbnTen, String isbnThirteen, String description,
                 LocalDate publication, String publisher, String format, String pages,
                 List<Author> authors, String reviewsWidgetHtml) {
+        this.title = title;
         this.url = url;
         this.isbnTen = isbnTen;
         this.isbnThirteen = isbnThirteen;
@@ -94,6 +101,15 @@ public class Book implements Serializable {
         this.pages = pages;
         this.authors = authors;
         this.reviewsWidgetHtml = reviewsWidgetHtml;
+    }
+
+    /**
+     * Gets title.
+     *
+     * @return String title
+     */
+    public String getTitle() {
+        return title;
     }
 
     /**

@@ -23,61 +23,83 @@ public class BookResultParser {
      * @return Book book
      */
     public static Book docToBook(Document doc) {
-        Book book = new Book();
         NodeList bookNodeList = doc.getElementsByTagName("book");
 
-        if (bookNodeList != null) {
+        if (bookNodeList != null && bookNodeList.getLength() > 0) {
             Element e = (Element) bookNodeList.item(0);
+            return elementToBook(e);
+        } else {
+            return new Book();
+        }
+    }
 
-            String url = "";
-            String isbn = "";
-            String isbnThirteen = "";
-            String description = "";
-            LocalDate publication = getPublicationDate(e);
-            String publisher = "";
-            String format = "";
-            String pages = "";
-            List<Author> authors = getAuthors(e);
+    /**
+     * Parses Element to Book.
+     *
+     * @param e Element
+     * @return Book book
+     */
+    public static Book elementToBook(Element e) {
+        String title = "";
+        String url = "";
+        String isbn = "";
+        String isbnThirteen = "";
+        String description = "";
+        LocalDate publication = getPublicationDate(e);
+        String publisher = "";
+        String format = "";
+        String pages = "";
+        List<Author> authors = getAuthors(e);
 
-            String widget = "";
+        String widget = "";
 
-            if (e.getElementsByTagName("publisher") != null) {
-                publisher = e.getElementsByTagName("publisher").item(0).getTextContent();
-            }
-
-            if (e.getElementsByTagName("url") != null) {
-                url = e.getElementsByTagName("url").item(0).getTextContent();
-            }
-
-            if (e.getElementsByTagName("isbn") != null) {
-                isbn = e.getElementsByTagName("isbn").item(0).getTextContent();
-            }
-
-            if (e.getElementsByTagName("isbn13") != null) {
-                isbnThirteen = e.getElementsByTagName("isbn13").item(0).getTextContent();
-            }
-
-            if (e.getElementsByTagName("description") != null) {
-                description = e.getElementsByTagName("description").item(0).getTextContent();
-            }
-
-            if (e.getElementsByTagName("format") != null) {
-                format = e.getElementsByTagName("format").item(0).getTextContent();
-            }
-
-            if (e.getElementsByTagName("num_pages") != null) {
-                pages = e.getElementsByTagName("num_pages").item(0).getTextContent();
-            }
-
-            if (e.getElementsByTagName("reviews_widget") != null) {
-                widget = e.getElementsByTagName("reviews_widget").item(0).getTextContent();
-            }
-
-            return new Book(url, isbn, isbnThirteen, description, publication, publisher,
-                    format, pages, authors, widget);
+        if (e.getElementsByTagName("publisher") != null
+                && e.getElementsByTagName("publisher").getLength() > 0) {
+            publisher = e.getElementsByTagName("publisher").item(0).getTextContent();
         }
 
-        return book;
+        if (e.getElementsByTagName("title") != null
+                && e.getElementsByTagName("title").getLength() > 0) {
+            title = e.getElementsByTagName("title").item(0).getTextContent();
+        }
+
+        if (e.getElementsByTagName("url") != null
+                && e.getElementsByTagName("url").getLength() > 0) {
+            url = e.getElementsByTagName("url").item(0).getTextContent();
+        }
+
+        if (e.getElementsByTagName("isbn") != null
+                && e.getElementsByTagName("isbn").getLength() > 0) {
+            isbn = e.getElementsByTagName("isbn").item(0).getTextContent();
+        }
+
+        if (e.getElementsByTagName("isbn13") != null
+                && e.getElementsByTagName("isbn13").getLength() > 0) {
+            isbnThirteen = e.getElementsByTagName("isbn13").item(0).getTextContent();
+        }
+
+        if (e.getElementsByTagName("description") != null
+                && e.getElementsByTagName("description").getLength() > 0) {
+            description = e.getElementsByTagName("description").item(0).getTextContent();
+        }
+
+        if (e.getElementsByTagName("format") != null
+                && e.getElementsByTagName("format").getLength() > 0) {
+            format = e.getElementsByTagName("format").item(0).getTextContent();
+        }
+
+        if (e.getElementsByTagName("num_pages") != null
+                && e.getElementsByTagName("num_pages").getLength() > 0) {
+            pages = e.getElementsByTagName("num_pages").item(0).getTextContent();
+        }
+
+        if (e.getElementsByTagName("reviews_widget") != null
+                && e.getElementsByTagName("reviews_widget").getLength() > 0) {
+            widget = e.getElementsByTagName("reviews_widget").item(0).getTextContent();
+        }
+
+        return new Book(title, url, isbn, isbnThirteen, description, publication, publisher,
+                format, pages, authors, widget);
     }
 
     /**
