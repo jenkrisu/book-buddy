@@ -182,9 +182,9 @@ public class SearchActivity extends BaseActivity implements DownloadCallback {
         findViewById(R.id.progressBarSearchBooks).setVisibility(View.GONE);
 
         // Show results
-        if (works.size() > 0) {
-            addAdapterAndListener(works);
-        }
+
+        addAdapterAndListener(works);
+
     }
 
     /**
