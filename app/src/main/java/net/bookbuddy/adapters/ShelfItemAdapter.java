@@ -1,5 +1,6 @@
 package net.bookbuddy.adapters;
 
+import android.text.Html;
 import android.widget.BaseExpandableListAdapter;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import net.bookbuddy.R;
@@ -109,8 +111,64 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
             holder = (ChildViewHolder) convertView.getTag();
         }
 
+        // Add shelves text
+        if (review.getShelves().size() > 0) {
+            String text = "Shelves: ";
+            for (int i = 0; i < review.getShelves().size(); i++) {
+                text += review.getShelves().get(i).getName();
+                if (i < review.getShelves().size() - 1) {
+                    text += ", ";
+                }
+            }
+            holder.shelves.setText(text);
+            holder.shelves.setVisibility(View.VISIBLE);
+        }
+
+        // Add stars to rating bar
+        try {
+            float rating = Float.valueOf(review.getRating());
+            holder.rating.setRating(rating);
+            holder.rating.setVisibility(View.VISIBLE);
+        } catch (NumberFormatException ex) {
+            holder.rating.setRating(0);
+            ex.printStackTrace();
+        }
+
+        // Add dates
+        setTextView(holder.started, "Started: ", review.getStartedAt());
+        setTextView(holder.read, "Read: ", review.getReadAt());
+        setTextView(holder.added, "Added: ", review.getDateAdded());
+        setTextView(holder.updated, "Updated: ", review.getDateUpdated());
+
+        // Only show update date if different than addition date
+        if (review.getDateAdded().equals(review.getDateUpdated())) {
+            holder.updated.setVisibility(View.GONE);
+        }
+
+        // Add review and review title
+        if (review.getBody().trim().length() > 0) {
+            System.out.println("Review:" + review.getBody());
+            holder.reviewTitle.setVisibility(View.VISIBLE);
+            holder.body.setText(Html.fromHtml(review.getBody()));
+            holder.body.setVisibility(View.VISIBLE);
+        } else {
+            holder.body.setText(review.getBody());
+            holder.body.setVisibility(View.GONE);
+            holder.reviewTitle.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
+
+    private void setTextView(TextView textView, String title, String value) {
+        textView.setText(title + value);
+        if (value.length() > 0) {
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
@@ -156,7 +214,25 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
     }
 
     private class ChildViewHolder {
+
+        TextView shelves;
+        TextView started;
+        TextView read;
+        TextView added;
+        TextView updated;
+        RatingBar rating;
+        TextView reviewTitle;
+        TextView body;
+
         public ChildViewHolder(View view) {
+            this.shelves = (TextView) view.findViewById(R.id.textView_expandableShelves);
+            this.started = (TextView) view.findViewById(R.id.textView_expandableStarted);
+            this.read = (TextView) view.findViewById(R.id.textView_expandableRead);
+            this.added = (TextView) view.findViewById(R.id.textView_expandableAdded);
+            this.updated = (TextView) view.findViewById(R.id.textView_expandableUpdated);
+            this.rating = (RatingBar) view.findViewById(R.id.ratingBar_reviewRating);
+            this.reviewTitle = (TextView) view.findViewById(R.id.textView_reviewTitle);
+            this.body = (TextView) view.findViewById(R.id.textView_expandableBody);
         }
     }
 }

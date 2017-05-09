@@ -59,11 +59,6 @@ public class ShelfActivity extends BaseActivity {
     private String order = "d";
 
     /**
-     * Amount of books on shelf.
-     */
-    private String amount;
-
-    /**
      * Creates activity.
      *
      * @param savedInstanceState Bundle
@@ -83,10 +78,10 @@ public class ShelfActivity extends BaseActivity {
 
             Shelf shelf = (Shelf) intent.getSerializableExtra("shelf");
             String name = shelf.getName();
-            amount = shelf.getBookAmount();
+            String amount = "(" + shelf.getBookAmount() + ")";
             if (name != null) {
                 // Set title to activity
-                setTitle(getTitle(name));
+                setTitle(getTitle(name) + " " + amount);
 
                 // Find books
                 getBooks(name);

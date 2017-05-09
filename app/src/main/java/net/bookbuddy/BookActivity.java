@@ -410,7 +410,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
             TextView textView = (TextView) findViewById(R.id.textViewBookPublication);
             textView.setVisibility(View.VISIBLE);
             int day = publication.getDayOfMonth();
-            String suffix = getLastDigitSuffix(day);
+            String suffix = ReviewResultParser.getLastDigitSuffix(day);
             String text = "Published: "
                     + publication.toString("MMMM d'" + suffix + "' YYYY");
             textView.setText(text);
@@ -477,25 +477,6 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
         goodreads.setClickable(true);
         goodreads.setMovementMethod(LinkMovementMethod.getInstance());
         goodreads.setText(Html.fromHtml(attribution));
-    }
-
-    /**
-     * Determines correct suffix for day digit.
-     *
-     * @param number day
-     * @return String suffix
-     */
-    private String getLastDigitSuffix(int number) {
-        switch ((number < 20) ? number : number % 10) {
-            case 1:
-                return "st";
-            case 2:
-                return "nd";
-            case 3:
-                return "rd";
-            default:
-                return "th";
-        }
     }
 
     /**

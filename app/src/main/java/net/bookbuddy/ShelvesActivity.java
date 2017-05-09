@@ -82,6 +82,7 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
 
         if (result.status == 200 && result.document != null) {
             shelves = BookShelfParser.docToShelves(result.document);
+            setTitle("All Shelves (" + shelves.size() + ")");
         } else {
             displaySnackbar();
         }
@@ -97,7 +98,6 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
     private void createListView(List<Shelf> shelves) {
         ListView listView = (ListView) findViewById(R.id.listViewShelves);
 
-        addHeader(listView, shelves.size());
         addFooter(listView);
 
         ListAdapter customAdapter = new BookShelfAdapter(shelves, this);
@@ -106,38 +106,16 @@ public class ShelvesActivity extends BaseActivity implements DownloadCallback {
         // Add listener
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Obs! Header is at position 0 and footer at last position.
-                int index = position - 1;
-                if (index > -1 && index < shelves.size()) {
-                    Intent intent =
-                            new Intent(getApplicationContext(), ShelfActivity.class);
-                    intent.putExtra("shelf", shelves.get(index));
-                    startActivity(intent);
-                }
+                // Obs! Footer at last position but it is non-clickable.
+                Intent intent =
+                        new Intent(getApplicationContext(), ShelfActivity.class);
+                intent.putExtra("shelf", shelves.get(position));
+                startActivity(intent);
             }
         });
 
         findViewById(R.id.progressBarShelves).setVisibility(View.GONE);
         findViewById(R.id.listViewShelves).setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Creates header.
-     *
-     * @param listView ListView
-     * @param shelves  Integer amount of shelves
-     */
-    private void addHeader(ListView listView, int shelves) {
-        // Add non selectable header to ListView
-
-        View header = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.list_item_shelf_header, null, false);
-
-        listView.addHeaderView(header, "Header", false);
-
-        // Set shelf amount
-        TextView textView = (TextView) findViewById(R.id.textViewShelvesAmount);
-        textView.setText("In total " + shelves + " shelves.");
     }
 
     /**

@@ -37,12 +37,17 @@ public class ReviewResultParser {
                 String id = BookResultParser.getStringContent(e, "id");
                 Book book = new Book();
                 String rating = BookResultParser.getStringContent(e, "rating");
-                String startedAt = BookResultParser.getStringContent(e, "startedAt");
-                String readAt = BookResultParser.getStringContent(e, "readAt");
-                String dateAdded = BookResultParser.getStringContent(e, "dateAdded");
-                String dateUpdated = BookResultParser.getStringContent(e, "dateUpdated");
+                String startedAt = BookResultParser.getStringContent(e, "started_at");
+                String readAt = BookResultParser.getStringContent(e, "read_at");
+                String dateAdded = BookResultParser.getStringContent(e, "date_added");
+                String dateUpdated = BookResultParser.getStringContent(e, "date_updated");
                 String body = BookResultParser.getStringContent(e, "body");
                 List<Shelf> shelves = new ArrayList<Shelf>();
+
+                startedAt = beautifyDateString(startedAt);
+                readAt = beautifyDateString(readAt);
+                dateAdded = beautifyDateString(dateAdded);
+                dateUpdated = beautifyDateString(dateUpdated);
 
                 if (e.getElementsByTagName("book") != null
                         && e.getElementsByTagName("book").getLength() > 0) {
@@ -63,5 +68,57 @@ public class ReviewResultParser {
         }
 
         return list;
+    }
+
+    /**
+     * Strips week day, time and timezone information from date string.
+     *
+     * @param string String to modify
+     * @return String modified string
+     */
+    private static String beautifyDateString(String string) {
+        if (string.length() < 1) {
+            return "";
+        }
+
+        String[] array = string.split(" ");
+        String beautified = "";
+
+        // Example string: Mon Nov 09 00:00:00 -0800 2016
+        // Result: Nov 9th 2016
+
+        if (array.length == 6) {
+            String dayWithSuffix = array[2];
+            if (dayWithSuffix.substring(0,1).equals("0")) {
+                dayWithSuffix = dayWithSuffix.substring(1);
+            }
+            try {
+                dayWithSuffix += getLastDigitSuffix(Integer.parseInt(dayWithSuffix));
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+            beautified = array[1] + " " + dayWithSuffix + " " + array[5];
+        }
+
+        return beautified;
+    }
+
+    /**
+     * Determines correct suffix for day digit.
+     *
+     * @param number day
+     * @return String suffix
+     */
+    public static String getLastDigitSuffix(int number) {
+        switch ((number < 20) ? number : number % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
     }
 }
