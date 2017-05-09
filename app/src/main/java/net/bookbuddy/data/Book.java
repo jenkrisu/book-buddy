@@ -67,6 +67,11 @@ public class Book implements Serializable {
     private String reviewsWidgetHtml;
 
     /**
+     * Small image url.
+     */
+    private String smallImageUrl;
+
+    /**
      * Default constructor.
      */
     public Book() {
@@ -89,7 +94,7 @@ public class Book implements Serializable {
      */
     public Book(String title, String url, String isbnTen, String isbnThirteen, String description,
                 LocalDate publication, String publisher, String format, String pages,
-                List<Author> authors, String reviewsWidgetHtml) {
+                List<Author> authors, String reviewsWidgetHtml, String smallImageUrl) {
         this.title = title;
         this.url = url;
         this.isbnTen = isbnTen;
@@ -101,6 +106,7 @@ public class Book implements Serializable {
         this.pages = pages;
         this.authors = authors;
         this.reviewsWidgetHtml = reviewsWidgetHtml;
+        this.smallImageUrl = smallImageUrl;
     }
 
     /**
@@ -191,5 +197,14 @@ public class Book implements Serializable {
      */
     public List<Author> getAuthors() {
         return authors;
+    }
+
+    /**
+     * Gets small image url.
+     *
+     * @return String small image url
+     */
+    public String getSmallImageUrl() {
+        return smallImageUrl;
     }
 }

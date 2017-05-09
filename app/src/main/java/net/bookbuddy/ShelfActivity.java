@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ExpandableListView;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth1AccessToken;
@@ -14,6 +15,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
+import net.bookbuddy.adapters.ShelfItemAdapter;
 import net.bookbuddy.data.Review;
 import net.bookbuddy.data.Shelf;
 import net.bookbuddy.utilities.Global;
@@ -30,6 +32,11 @@ import java.util.List;
  * Displays items on shelf.
  */
 public class ShelfActivity extends BaseActivity {
+
+    /**
+     * Expandable lis view for showing books.
+     */
+    private ExpandableListView expandableListView;
 
     /**
      * Saves userId.
@@ -72,6 +79,8 @@ public class ShelfActivity extends BaseActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra("shelf")) {
+            expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_shelf);
+
             Shelf shelf = (Shelf) intent.getSerializableExtra("shelf");
             String name = shelf.getName();
             amount = shelf.getBookAmount();
@@ -83,13 +92,6 @@ public class ShelfActivity extends BaseActivity {
                 getBooks(name);
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sort = "date_added";
-        order = "d";
     }
 
     /**
@@ -164,6 +166,8 @@ public class ShelfActivity extends BaseActivity {
             System.out.println(r.getBook().getTitle() + ", " + r.getRating());
         }
 
+        expandableListView.setAdapter(new ShelfItemAdapter(this, reviews));
+
         findViewById(R.id.progressBar_shelf).setVisibility(View.GONE);
     }
 
@@ -209,6 +213,8 @@ public class ShelfActivity extends BaseActivity {
                 service.signRequest(accessToken, request);
 
                 Response response = request.send();
+
+                System.out.println(response.getBody());
 
                 Document doc = null;
 

@@ -67,9 +67,10 @@ public class BookResultParser {
         String pages = getStringContent(e, "num_pages");
         List<Author> authors = getAuthors(e);
         String widget = getStringContent(e, "reviews_widget");
+        String smallImageUrl = getStringContent(e, "small_image_url");
 
         return new Book(title, url, isbn, isbnThirteen, description, publication, publisher,
-                format, pages, authors, widget);
+                format, pages, authors, widget, smallImageUrl);
     }
 
     /**
