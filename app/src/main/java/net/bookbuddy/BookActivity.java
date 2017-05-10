@@ -85,12 +85,38 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
         // Get intent
         Intent intent = getIntent();
         if (intent.hasExtra("work")) {
+            // Activity started from search
             work = (Work) intent.getSerializableExtra("work");
-            addInitialData();
-            addSpinner();
-            fetchShelves();
-            fetchBook();
+            addData();
+        } else if (intent.hasExtra("book")) {
+            // Activity started from self
+            Book book = (Book) intent.getSerializableExtra("book");
+            DownloadXmlTask downloadWorkTask = new DownloadXmlTask();
+            downloadWorkTask.callback = this;
+
+            Uri uri = Uri.parse("http://www.goodreads.com/search/index")
+                    .buildUpon()
+                    .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
+                    .appendQueryParameter("q", book.getTitle())
+                    .build();
+
+            try {
+                downloadWorkTask.execute(new URL(uri.toString()));
+            } catch (MalformedURLException ex) {
+                displaySnackbar(getResources().getString(R.string.snackbar_error));
+                ex.printStackTrace();
+            }
         }
+    }
+
+    /**
+     * Adds initial data, spinner, gets shelves, gets book.
+     */
+    private void addData() {
+        addInitialData();
+        addSpinner();
+        fetchShelves();
+        fetchBook();
     }
 
     /**
@@ -213,8 +239,8 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
      * Fetches book data.
      */
     private void fetchBook() {
-        DownloadXmlTask downloadXmlTask = new DownloadXmlTask();
-        downloadXmlTask.callback = this;
+        DownloadXmlTask downloadBookTask = new DownloadXmlTask();
+        downloadBookTask.callback = this;
 
         Uri uri = Uri.parse("http://www.goodreads.com/book/show")
                 .buildUpon()
@@ -224,9 +250,9 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
                 .build();
 
         try {
-            downloadXmlTask.execute(new URL(uri.toString()));
+            downloadBookTask.execute(new URL(uri.toString()));
         } catch (MalformedURLException ex) {
-            displaySnackbar();
+            displaySnackbar(getResources().getString(R.string.snackbar_load_error));
             ex.printStackTrace();
         }
     }
@@ -238,21 +264,36 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
      */
     @Override
     public void processFinish(DownloadXmlTask.Result result) {
-        Book book;
 
-        // If document parsed and has tag book
-        if (result.document != null && result.document.getElementsByTagName("book") != null) {
-            book = BookResultParser.docToBook(result.document);
-
-            if (book != null) {
-                renderBookData(book);
+        if (this.work == null) {
+            // If fetching work document
+            if (result.document != null && result.document.getElementsByTagName("work") != null) {
+                List<Work> works = BookSearchResultsParser.docToWorks(result.document);
+                if (works.size() > 0) {
+                    this.work = works.get(0);
+                    addData();
+                } else {
+                    displaySnackbar(getResources().getString(R.string.snackbar_error));
+                }
             } else {
-                displaySnackbar();
+                displaySnackbar(getResources().getString(R.string.snackbar_error));
             }
         } else {
-            displaySnackbar();
+            // If fetching book document
+            if (result.document != null && result.document.getElementsByTagName("book") != null) {
+                Book book = BookResultParser.docToBook(result.document);
+
+                if (book != null) {
+                    renderBookData(book);
+                } else {
+                    displaySnackbar(getResources().getString(R.string.snackbar_load_error));
+                }
+            } else {
+                displaySnackbar(getResources().getString(R.string.snackbar_load_error));
+            }
         }
     }
+
 
     /**
      * Adds spinner while loading.
@@ -481,10 +522,12 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
 
     /**
      * Displays load error in snackbar.
+     *
+     * @param msg String message
      */
-    private void displaySnackbar() {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                getResources().getText(R.string.snackbar_load_error), Snackbar.LENGTH_LONG);
+    private void displaySnackbar(String msg) {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), msg,
+                Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 
@@ -584,23 +627,16 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
     private void processShelfUpdate(int status) {
         findViewById(R.id.progressBar_spinnerLoad).setVisibility(View.GONE);
         findViewById(R.id.spinner_shelves).setVisibility(View.VISIBLE);
-        Snackbar snackbar;
 
         switch (status) {
             case 200:
-                snackbar = Snackbar.make(findViewById(android.R.id.content),
-                        getResources().getText(R.string.snackbar_removed), Snackbar.LENGTH_LONG);
-                snackbar.show();
+                displaySnackbar(getResources().getString(R.string.snackbar_removed));
                 break;
             case 201:
-                snackbar = Snackbar.make(findViewById(android.R.id.content),
-                        getResources().getText(R.string.snackbar_added), Snackbar.LENGTH_LONG);
-                snackbar.show();
+                displaySnackbar(getResources().getString(R.string.snackbar_added));
                 break;
             default:
-                snackbar = Snackbar.make(findViewById(android.R.id.content),
-                        getResources().getText(R.string.snackbar_error), Snackbar.LENGTH_LONG);
-                snackbar.show();
+                displaySnackbar(getResources().getString(R.string.snackbar_error));
                 break;
         }
     }

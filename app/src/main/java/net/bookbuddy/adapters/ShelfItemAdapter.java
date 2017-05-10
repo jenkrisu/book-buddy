@@ -1,5 +1,6 @@
 package net.bookbuddy.adapters;
 
+import android.content.Intent;
 import android.text.Html;
 import android.widget.BaseExpandableListAdapter;
 
@@ -9,10 +10,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import net.bookbuddy.BookActivity;
 import net.bookbuddy.R;
 import net.bookbuddy.data.Review;
 
@@ -157,6 +160,15 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
             holder.reviewTitle.setVisibility(View.GONE);
         }
 
+        holder.showBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, BookActivity.class);
+                intent.putExtra("book", review.getBook());
+                context.startActivity(intent);
+            }
+        });
+
         return convertView;
     }
 
@@ -223,6 +235,7 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
         RatingBar rating;
         TextView reviewTitle;
         TextView body;
+        Button showBook;
 
         public ChildViewHolder(View view) {
             this.shelves = (TextView) view.findViewById(R.id.textView_expandableShelves);
@@ -233,6 +246,7 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
             this.rating = (RatingBar) view.findViewById(R.id.ratingBar_reviewRating);
             this.reviewTitle = (TextView) view.findViewById(R.id.textView_reviewTitle);
             this.body = (TextView) view.findViewById(R.id.textView_expandableBody);
+            this.showBook = (Button) view.findViewById(R.id.button_showBook);
         }
     }
 }

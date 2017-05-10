@@ -76,9 +76,8 @@ public class DownloadXmlTask extends AsyncTask<URL, Integer, DownloadXmlTask.Res
                 stream.close();
             }
 
-            if (connection != null) {
-                connection.disconnect();
-            }
+
+            connection.disconnect();
 
         } catch (IOException ex) {
             ex.printStackTrace();
