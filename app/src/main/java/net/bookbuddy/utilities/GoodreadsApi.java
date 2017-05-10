@@ -4,11 +4,9 @@ import com.github.scribejava.core.builder.api.DefaultApi10a;
 import com.github.scribejava.core.model.OAuth1RequestToken;
 
 /**
- * Created by Jenni on 2.5.2017.
- */
-
-/**
  * Handles OAuth1 to GoodReads Api as per ScribeJava Custom Api guidelines.
+ *
+ * Created by Jenni on 2.5.2017.
  */
 public class GoodreadsApi extends DefaultApi10a {
 
