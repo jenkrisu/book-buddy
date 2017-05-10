@@ -36,41 +36,92 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
         this.reviews = reviews;
     }
 
+    /**
+     * Gets group count.
+     *
+     * @return int group count
+     */
     @Override
     public int getGroupCount() {
         return reviews.size();
     }
 
+    /**
+     * Gets children count.
+     *
+     * @param groupPosition int position
+     * @return children count
+     */
     @Override
     public int getChildrenCount(int groupPosition) {
         return 1;
     }
 
+    /**
+     * Gets group position.
+     *
+     * @param groupPosition int group position
+     * @return Review
+     */
     @Override
     public Review getGroup(int groupPosition) {
         return reviews.get(groupPosition);
     }
 
+    /**
+     * Gets child.
+     *
+     * @param groupPosition int
+     * @param childPosition int
+     * @return Object child
+     */
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         return reviews.get(groupPosition);
     }
 
+    /**
+     * Gets group id.
+     *
+     * @param groupPosition int
+     * @return long
+     */
     @Override
     public long getGroupId(int groupPosition) {
         return groupPosition;
     }
 
+    /**
+     * Gets child id.
+     *
+     * @param groupPosition int position
+     * @param childPosition int position
+     * @return long
+     */
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         return groupPosition;
     }
 
+    /**
+     * Returns hasStableIds.
+     *
+     * @return boolean
+     */
     @Override
     public boolean hasStableIds() {
         return false;
     }
 
+    /**
+     * Creates group viewl
+     *
+     * @param groupPosition int position
+     * @param isExpanded    boolean expanded
+     * @param convertView   View view
+     * @param parent        ViewGroup parent
+     * @return View
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
@@ -100,6 +151,16 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    /**
+     * Creates childv view.
+     *
+     * @param groupPosition int position
+     * @param childPosition int position
+     * @param isLastChild   boolean last child
+     * @param convertView   View
+     * @param parent        ViewGroup
+     * @return View
+     */
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                              View convertView, ViewGroup parent) {
@@ -175,6 +236,13 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    /**
+     * Sets text to text view.
+     *
+     * @param textView TextView
+     * @param title    String title
+     * @param value    String value
+     */
     private void setTextView(TextView textView, String title, String value) {
         textView.setText(title + value);
         if (value.length() > 0) {
@@ -184,7 +252,13 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
         }
     }
 
-
+    /**
+     * Returns if child is selectable.
+     *
+     * @param groupPosition int position
+     * @param childPosition int position
+     * @return boolean
+     */
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
@@ -228,18 +302,61 @@ public class ShelfItemAdapter extends BaseExpandableListAdapter {
         }
     }
 
+    /**
+     * Holds child view.
+     */
     private class ChildViewHolder {
 
+        /**
+         * Shelves.
+         */
         TextView shelves;
+
+        /**
+         * Starting date text.
+         */
         TextView started;
+
+        /**
+         * Read date text.
+         */
         TextView read;
+
+        /**
+         * Addition date text.
+         */
         TextView added;
+
+        /**
+         * Updating date text.
+         */
         TextView updated;
+
+        /**
+         * Rating bar.
+         */
         RatingBar rating;
+
+        /**
+         * Review title text.
+         */
         TextView reviewTitle;
+
+        /**
+         * Review body text.
+         */
         TextView body;
+
+        /**
+         * Button to show book page.
+         */
         Button showBook;
 
+        /**
+         * Creates child view holder.
+         *
+         * @param view View
+         */
         public ChildViewHolder(View view) {
             this.shelves = (TextView) view.findViewById(R.id.textView_expandableShelves);
             this.started = (TextView) view.findViewById(R.id.textView_expandableStarted);
