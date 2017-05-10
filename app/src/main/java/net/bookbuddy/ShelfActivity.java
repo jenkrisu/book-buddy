@@ -236,6 +236,7 @@ public class ShelfActivity extends BaseActivity {
                         reviewsTask.execute(name, v.getText().toString());
                         editText.setVisibility(View.INVISIBLE);
                         expandableListView.setVisibility(View.GONE);
+                        findViewById(R.id.progressBar_shelf).setVisibility(View.VISIBLE);
                     }
                     handled = true;
                 }
@@ -294,8 +295,6 @@ public class ShelfActivity extends BaseActivity {
                 service.signRequest(accessToken, request);
 
                 Response response = request.send();
-
-                System.out.println(response.getBody());
 
                 Document doc = null;
 
