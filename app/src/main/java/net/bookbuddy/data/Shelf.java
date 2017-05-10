@@ -52,6 +52,15 @@ public class Shelf implements Serializable {
     }
 
     /**
+     * Creates shelf.
+     *
+     * @param name String name
+     */
+    public Shelf(String name) {
+        this.name = name;
+    }
+
+    /**
      * Gets name.
      *
      * @return String name

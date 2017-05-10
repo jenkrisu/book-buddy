@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import net.bookbuddy.data.Shelf;
 import net.bookbuddy.utilities.Global;
 
 public class BaseActivity extends AppCompatActivity
@@ -111,13 +112,31 @@ public class BaseActivity extends AppCompatActivity
                 }
                 break;
             case R.id.nav_to_read:
-                checkLoginStatus();
+                if (hasLoggedIn()) {
+                    Intent intent = new Intent(this, ShelfActivity.class);
+                    intent.putExtra("shelf", new Shelf("to-read"));
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
             case R.id.nav_reading:
-                checkLoginStatus();
+                if (hasLoggedIn()) {
+                    Intent intent = new Intent(this, ShelfActivity.class);
+                    intent.putExtra("shelf", new Shelf("currently-reading"));
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
             case R.id.nav_read:
-                checkLoginStatus();
+                if (hasLoggedIn()) {
+                    Intent intent = new Intent(this, ShelfActivity.class);
+                    intent.putExtra("shelf", new Shelf("read"));
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
             case R.id.nav_login:
                 startActivity(new Intent(this, MainActivity.class));
