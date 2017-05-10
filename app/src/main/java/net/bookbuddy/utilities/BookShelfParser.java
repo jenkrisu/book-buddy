@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Parses book shelf.
+ * <p>
  * Created by Jenni on 3.5.2017.
  */
-
 public class BookShelfParser {
 
     /**

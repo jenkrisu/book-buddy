@@ -16,6 +16,9 @@ import android.widget.TextView;
 import net.bookbuddy.data.Shelf;
 import net.bookbuddy.utilities.Global;
 
+/**
+ * Makes drawer with drawer functions.
+ */
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

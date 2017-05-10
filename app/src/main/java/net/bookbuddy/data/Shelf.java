@@ -3,9 +3,10 @@ package net.bookbuddy.data;
 import java.io.Serializable;
 
 /**
+ * Holds shelf data.
+ * <p>
  * Created by Jenni on 3.5.2017.
  */
-
 public class Shelf implements Serializable {
 
     /**

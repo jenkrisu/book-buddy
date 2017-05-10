@@ -3,9 +3,10 @@ package net.bookbuddy.data;
 import java.util.List;
 
 /**
+ * Holds review data.
+ * <p>
  * Created by Jenni on 9.5.2017.
  */
-
 public class Review {
 
     /**

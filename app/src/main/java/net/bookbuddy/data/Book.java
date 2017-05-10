@@ -6,9 +6,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Holds book data.
+ * <p>
  * Created by Jenni on 26.4.2017.
  */
-
 public class Book implements Serializable {
 
     /**

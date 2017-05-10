@@ -10,9 +10,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * Makes GET post to given url with AsyncTask.
+ *
  * Created by Jenni on 3.5.2017.
  */
-
 public class DownloadXmlTask extends AsyncTask<URL, Integer, DownloadXmlTask.Result> {
 
     /**

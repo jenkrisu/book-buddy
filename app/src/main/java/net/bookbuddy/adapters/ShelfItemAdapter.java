@@ -23,6 +23,9 @@ import net.bookbuddy.data.Review;
  * Created by Jenni on 9.5.2017.
  */
 
+/**
+ * Populates custom expandable list item.
+ */
 public class ShelfItemAdapter extends BaseExpandableListAdapter {
 
     private Context context;

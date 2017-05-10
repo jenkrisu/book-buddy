@@ -13,9 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Parses review data.
+ * <p>
  * Created by Jenni on 9.5.2017.
  */
-
 public class ReviewResultParser {
 
     /**
@@ -89,7 +90,7 @@ public class ReviewResultParser {
 
         if (array.length == 6) {
             String dayWithSuffix = array[2];
-            if (dayWithSuffix.substring(0,1).equals("0")) {
+            if (dayWithSuffix.substring(0, 1).equals("0")) {
                 dayWithSuffix = dayWithSuffix.substring(1);
             }
             try {

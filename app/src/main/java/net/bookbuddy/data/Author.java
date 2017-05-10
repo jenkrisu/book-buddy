@@ -3,9 +3,10 @@ package net.bookbuddy.data;
 import java.io.Serializable;
 
 /**
+ * Holds author data.
+ * <p>
  * Created by Jenni on 26.4.2017.
  */
-
 public class Author implements Serializable {
 
     /**

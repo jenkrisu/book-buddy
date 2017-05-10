@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Parses book document.
+ * <p>
  * Created by Jenni on 26.4.2017.
  */
-
 public class BookResultParser {
 
     /**

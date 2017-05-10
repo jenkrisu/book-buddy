@@ -3,9 +3,10 @@ package net.bookbuddy.data;
 import java.io.Serializable;
 
 /**
+ * Holds work data.
+ * <p>
  * Created by Jenni on 19.4.2017.
  */
-
 public class Work implements Serializable {
 
     /**

@@ -1,9 +1,10 @@
 package net.bookbuddy.utilities;
 
 /**
+ * Saves shared preferences name.
+ *
  * Created by Jenni on 3.5.2017.
  */
-
 public class Global {
 
     /**

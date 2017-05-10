@@ -27,6 +27,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Shows all user shelves.
+ */
 public class ShelvesActivity extends BaseActivity implements DownloadCallback {
 
     /**

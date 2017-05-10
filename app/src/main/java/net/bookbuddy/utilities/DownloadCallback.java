@@ -1,9 +1,10 @@
 package net.bookbuddy.utilities;
 
 /**
+ * Handles callback from download task.
+ * <p>
  * Created by Jenni on 3.5.2017.
  */
-
 public interface DownloadCallback {
 
     /**

@@ -41,7 +41,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Shows details of book and handles shelf updates.
+ */
 public class BookActivity extends BaseActivity implements DownloadCallback, OnItemSelectedListener {
 
     /**

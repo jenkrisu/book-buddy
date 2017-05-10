@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Parses search results.
+ * <p>
  * Created by Jenni on 19.4.2017.
  */
-
 public class BookSearchResultsParser {
 
     /**
