@@ -1,12 +1,20 @@
 package net.bookbuddy;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth1AccessToken;
@@ -27,6 +35,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +71,11 @@ public class ShelfActivity extends BaseActivity {
     private String order = "d";
 
     /**
+     * Self name.
+     */
+    private String name;
+
+    /**
      * Amount of books on shelf.
      */
     private String amount;
@@ -82,11 +96,13 @@ public class ShelfActivity extends BaseActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra("shelf")) {
-            expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_shelf);
+
+            addExpandableListView();
 
             Shelf shelf = (Shelf) intent.getSerializableExtra("shelf");
             String name = shelf.getName();
             if (name != null) {
+                this.name = name;
                 // Set title to activity
                 setTitle(getTitle(name));
 
@@ -94,6 +110,36 @@ public class ShelfActivity extends BaseActivity {
                 getBooks(name);
             }
         }
+    }
+
+    /**
+     * Adds ExpandableListView with header and footer.
+     */
+    private void addExpandableListView() {
+        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_shelf);
+
+        // Add header
+        View header = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.expandable_list_item_book_header, null, false);
+
+        expandableListView.addHeaderView(header, "Header", false);
+
+        // Add footer
+        View footer = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.expandable_list_item_book_footer, null, false);
+
+        expandableListView.addFooterView(footer, "Footer", false);
+
+        // Add footer text
+        TextView goodreads = (TextView) findViewById(R.id.textViewGoodreadsDataShelf);
+        Uri uri = Uri.parse("https://www.goodreads.com/review/list/" + userId)
+                .buildUpon()
+                .appendQueryParameter("shelf", this.name)
+                .build();
+        String attribution = "Shelf on <a href='" + uri.toString() + "'>Goodreads</a>";
+        goodreads.setClickable(true);
+        goodreads.setMovementMethod(LinkMovementMethod.getInstance());
+        goodreads.setText(Html.fromHtml(attribution));
     }
 
     /**
@@ -123,7 +169,7 @@ public class ShelfActivity extends BaseActivity {
     private void getBooks(String name) {
         if (isLoggedIn() && containsIdAndToken()) {
             ReviewsTask reviewsTask = new ReviewsTask();
-            reviewsTask.execute(name, "date_added", "d");
+            reviewsTask.execute(name);
         }
     }
 
@@ -163,11 +209,39 @@ public class ShelfActivity extends BaseActivity {
 
     private void processBooksTask(List<Review> reviews) {
         expandableListView.setAdapter(new ShelfItemAdapter(this, reviews));
-        if (amount != null && amount.length() > 0) {
-            String title = (String) getTitle();
-            setTitle(title + " (" + amount + ")");
+        if (!this.amount.isEmpty()) {
+            setTitle(this.name + " (" + this.amount + ")");
         }
+
+        // Remove progress bar
         findViewById(R.id.progressBar_shelf).setVisibility(View.GONE);
+
+        // Updates header text
+        TextView textView = (TextView) findViewById(R.id.textView_shelfBookAmount);
+        textView.setText("Showing " + reviews.size() + " of " + this.amount + " books.");
+
+        // Sets edit text and lis view visible
+        EditText editText = (EditText) findViewById(R.id.editText_shelfFilter);
+        editText.setVisibility(View.VISIBLE);
+        expandableListView.setVisibility(View.VISIBLE);
+
+        // Sets listener to edit text
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (isLoggedIn() && containsIdAndToken()) {
+                        ReviewsTask reviewsTask = new ReviewsTask();
+                        reviewsTask.execute(name, v.getText().toString());
+                        editText.setVisibility(View.INVISIBLE);
+                        expandableListView.setVisibility(View.GONE);
+                    }
+                    handled = true;
+                }
+                return handled;
+            }
+        });
     }
 
     /**
@@ -176,14 +250,18 @@ public class ShelfActivity extends BaseActivity {
     private class ReviewsTask extends AsyncTask<String, Integer, List<Review>> {
 
         /**
-         * Gets user id and possibly user name (optional) from GoodReads.
+         * Finds books on shelf.
          *
-         * @param args array with book shelf name
+         * @param args array with book shelf name and query (query optional)
          * @return List<Review> reviews
          */
         @Override
         protected List<Review> doInBackground(String... args) {
             String name = args[0];
+            String query = "";
+            if (args.length > 1) {
+                query = args[1];
+            }
 
             List<Review> list = new ArrayList<Review>();
 
@@ -205,6 +283,10 @@ public class ShelfActivity extends BaseActivity {
                         .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
                         .build();
 
+                if (query.length() > 0) {
+                    uri = uri.buildUpon().appendQueryParameter("search[query]", query).build();
+                }
+
                 OAuthRequest request = new OAuthRequest(Verb.GET,
                         uri.toString(),
                         service);
@@ -222,10 +304,12 @@ public class ShelfActivity extends BaseActivity {
                 }
 
                 if (doc != null) {
-                    NodeList reviewsNodeList = doc.getElementsByTagName("reviews");
-                    NamedNodeMap map = reviewsNodeList.item(0).getAttributes();
-                    Node reviewsTotalAttributeNode = map.getNamedItem("total");
-                    amount = reviewsTotalAttributeNode.getNodeValue();
+                    if (amount == null) {
+                        NodeList reviewsNodeList = doc.getElementsByTagName("reviews");
+                        NamedNodeMap map = reviewsNodeList.item(0).getAttributes();
+                        Node reviewsTotalAttributeNode = map.getNamedItem("total");
+                        amount = reviewsTotalAttributeNode.getNodeValue();
+                    }
 
                     list = ReviewResultParser.docToReviews(doc);
                 }

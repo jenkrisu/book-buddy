@@ -17,13 +17,27 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
-    <!-- Search results -->
+    <!-- Shelf book results -->
     <LinearLayout
         android:id="@+id/linearLayout_shelf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:focusableInTouchMode="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <EditText
+            android:id="@+id/editText_shelfFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/filter_hint"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:visibility="invisible"/>
 
         <ExpandableListView
             android:id="@+id/expandableListView_shelf"
