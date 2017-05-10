@@ -24,6 +24,9 @@ import net.bookbuddy.utilities.InputStreamParser;
 import net.bookbuddy.utilities.ReviewResultParser;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +62,11 @@ public class ShelfActivity extends BaseActivity {
     private String order = "d";
 
     /**
+     * Amount of books on shelf.
+     */
+    private String amount;
+
+    /**
      * Creates activity.
      *
      * @param savedInstanceState Bundle
@@ -78,10 +86,9 @@ public class ShelfActivity extends BaseActivity {
 
             Shelf shelf = (Shelf) intent.getSerializableExtra("shelf");
             String name = shelf.getName();
-            String amount = "(" + shelf.getBookAmount() + ")";
             if (name != null) {
                 // Set title to activity
-                setTitle(getTitle(name) + " " + amount);
+                setTitle(getTitle(name));
 
                 // Find books
                 getBooks(name);
@@ -156,6 +163,10 @@ public class ShelfActivity extends BaseActivity {
 
     private void processBooksTask(List<Review> reviews) {
         expandableListView.setAdapter(new ShelfItemAdapter(this, reviews));
+        if (amount != null && amount.length() > 0) {
+            String title = (String) getTitle();
+            setTitle(title + " (" + amount + ")");
+        }
         findViewById(R.id.progressBar_shelf).setVisibility(View.GONE);
     }
 
@@ -211,6 +222,11 @@ public class ShelfActivity extends BaseActivity {
                 }
 
                 if (doc != null) {
+                    NodeList reviewsNodeList = doc.getElementsByTagName("reviews");
+                    NamedNodeMap map = reviewsNodeList.item(0).getAttributes();
+                    Node reviewsTotalAttributeNode = map.getNamedItem("total");
+                    amount = reviewsTotalAttributeNode.getNodeValue();
+
                     list = ReviewResultParser.docToReviews(doc);
                 }
 
