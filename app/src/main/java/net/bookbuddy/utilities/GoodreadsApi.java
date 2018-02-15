@@ -13,7 +13,7 @@ public class GoodreadsApi extends DefaultApi10a {
     /**
      * Authorization url.
      */
-    private static final String AUTHORIZE_URL = "http://www.goodreads.com/oauth/authorize?oauth_token=%s";
+    private static final String AUTHORIZE_URL = "https://www.goodreads.com/oauth/authorize?oauth_token=%s";
 
     /**
      * Default constructor.
@@ -44,7 +44,7 @@ public class GoodreadsApi extends DefaultApi10a {
      */
     @Override
     public String getAccessTokenEndpoint() {
-        return "http://www.goodreads.com/oauth/access_token";
+        return "https://www.goodreads.com/oauth/access_token";
     }
 
     /**
@@ -54,7 +54,7 @@ public class GoodreadsApi extends DefaultApi10a {
      */
     @Override
     public String getRequestTokenEndpoint() {
-        return "http://www.goodreads.com/oauth/request_token";
+        return "https://www.goodreads.com/oauth/request_token";
     }
 
     /**

@@ -141,7 +141,7 @@ public class SearchActivity extends BaseActivity implements DownloadCallback {
             DownloadXmlTask downloadXmlTask = new DownloadXmlTask();
             downloadXmlTask.callback = this;
 
-            Uri uri = Uri.parse("http://www.goodreads.com/search/index")
+            Uri uri = Uri.parse("https://www.goodreads.com/search/index")
                     .buildUpon()
                     .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
                     .appendQueryParameter("q", this.query)
@@ -277,7 +277,7 @@ public class SearchActivity extends BaseActivity implements DownloadCallback {
      * @return String link
      */
     private String createGoodreadsAttribution() {
-        Uri uri = Uri.parse("http://www.goodreads.com/search")
+        Uri uri = Uri.parse("https://www.goodreads.com/search")
                 .buildUpon()
                 .appendQueryParameter("q", this.query)
                 .build();

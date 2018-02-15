@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     private void processRequestTokenResponse(OAuth1RequestToken token) {
         if (token != null) {
             this.requestToken = token;
-            Uri uri = Uri.parse("http://goodreads.com/oauth/authorize")
+            Uri uri = Uri.parse("https://goodreads.com/oauth/authorize")
                     .buildUpon()
                     .appendQueryParameter("oauth_token", token.getToken())
                     .appendQueryParameter("mobile", "1")

@@ -96,7 +96,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
             DownloadXmlTask downloadWorkTask = new DownloadXmlTask();
             downloadWorkTask.callback = this;
 
-            Uri uri = Uri.parse("http://www.goodreads.com/search/index")
+            Uri uri = Uri.parse("https://www.goodreads.com/search/index")
                     .buildUpon()
                     .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
                     .appendQueryParameter("q", book.getTitle())
@@ -244,7 +244,7 @@ public class BookActivity extends BaseActivity implements DownloadCallback, OnIt
         DownloadXmlTask downloadBookTask = new DownloadXmlTask();
         downloadBookTask.callback = this;
 
-        Uri uri = Uri.parse("http://www.goodreads.com/book/show")
+        Uri uri = Uri.parse("https://www.goodreads.com/book/show")
                 .buildUpon()
                 .appendQueryParameter("key", BuildConfig.GOOD_READS_API_KEY)
                 .appendQueryParameter("id", work.getBestBook().getId())
